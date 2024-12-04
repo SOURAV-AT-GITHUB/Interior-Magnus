@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors")
-const functions = require('firebase-functions');
+
 const PORT = process.env.PORT || 3000;
 
 const portfolioRouter = require("./routes/portfolio.router")
@@ -19,5 +19,3 @@ app.get("/", (req, res) => {
 
 
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
-
-exports.api = functions.https.onRequest(app)
