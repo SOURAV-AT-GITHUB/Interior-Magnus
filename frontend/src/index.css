@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+      --color-primary : #FDC546;
+      --color-secondary: #44AAB6;
+}
+.hide-scrollbar::-webkit-scrollbar{
+display: none;
+}
