@@ -124,7 +124,7 @@ input:not(:placeholder-shown) + label {
   color: var(--color-secondary);
   background-color: #fff;
 }
-
+/*Animation for about scetion and why us section, small screen only*/
 @media screen and (max-width: 768px) {
 .slider-container {
   transition: transform 3s ease; 

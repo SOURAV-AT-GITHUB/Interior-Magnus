@@ -3,7 +3,7 @@ import testimonial2 from "/testimonial2.jfif";
 import testimonial3 from "/testimonial3.jfif";
 import testimonalStrip from "/testimonal-strips.svg";
 import testimonialCircle from "/testimonial-circle.svg";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 export default function TestimonialsSection() {
   const testimonials = [
     {
@@ -22,40 +22,53 @@ export default function TestimonialsSection() {
       author: "Vaibhav Vaish",
     },
   ];
-  const [reverse, setReverse] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const sliderContainerRef = useRef(null);
-  //Detect screen size change
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Check if screen width is <= 768px
-    };
+  // const [reverse, setReverse] = useState(false);
+  // const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  // const sliderContainerRef = useRef(null);
+  // //Detect screen size change
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsMobile(window.innerWidth <= 768); // Check if screen width is <= 768px
+  //   };
 
-    window.addEventListener("resize", handleResize); // Add resize event listener
+  //   window.addEventListener("resize", handleResize); // Add resize event listener
 
-    return () => {
-      window.removeEventListener("resize", handleResize); // Cleanup on component unmount
-    };
-  }, []);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setReverse((prev) => !prev);
-    }, 5000);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize); // Cleanup on component unmount
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setReverse((prev) => !prev);
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, [isMobile]);
+  //   return () => clearInterval(interval);
+  // }, [isMobile]);
 
-  useEffect(() => {
-    if (isMobile && sliderContainerRef.current) {
-      sliderContainerRef.current.style.transform = reverse
-        ? "translateX(-193%)"
-        : "translateX(3%)";
-    }
-  }, [reverse, isMobile]);
+  // useEffect(() => {
+  //   if (isMobile && sliderContainerRef.current) {
+  //     sliderContainerRef.current.style.transform = reverse
+  //       ? "translateX(-193%)"
+  //       : "translateX(3%)";
+  //   }
+  // }, [reverse, isMobile]);
+  const [activeIndex, setActiveIndex] = useState(1);
+  const nextIndex = () => {
+    setActiveIndex((prev) => {
+      if (prev >= testimonials.length - 1) return 0;
+      return prev + 1;
+    });
+  };
+  const previousIndex = () => {
+    setActiveIndex((prev) => {
+      if (prev < 1) return testimonials.length - 1;
+      else return prev - 1;
+    });
+  };
   return (
     <section
       id="home-testimonials"
-      className="relative z-[1] overflow-hidden  bg-white py-10  lg:py-20 px-5  lg:pl-28 lg:pr-0"
+      className="min-h-[86.5vh]  relative z-[1] overflow-hidden  bg-white py-10  lg:py-20 px-5  lg:pl-28 lg:pr-0"
     >
       <div className=" absolute -left-2 -top-8  -z-[1] flex">
         <img
@@ -71,8 +84,6 @@ export default function TestimonialsSection() {
       </div>
 
       <div className="lg:flex mt-8 ">
-
-
         <div className="lg:w-2/5 self-end  text-center lg:text-left">
           <p className="text-secondary text-xl">Testimonials</p>
           <p className="text-3xl  lg:text-4xl">What Our Clients Say</p>
@@ -90,39 +101,57 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-
         <div className="wrapper lg:w-3/5 overflow-x-hidden  ">
-        <div id="testimonials" ref={sliderContainerRef}  className={`slider-container   ${
-              reverse ? "reversed" : ""
+          <div
+            id="testimonials"
+            // ref={sliderContainerRef}
+            className={`slider-container ${
+              /* reverse ? "reversed" : ""*/ ""
             } lg:overflow-x-auto  flex gap-4 mt-4 lg:gap-10 `}
-        >
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="relative grid grid-rows-2  max-w-[85vw] min-w-[325px]  min-h-[250px] lg:min-w-[360px] lg:min-h-[350px]  mb-4 border border-black rounded-3xl overflow-hidden shadow-buttonShadow"
-            >
-              <img
-                src={testimonial.image}
-                alt={testimonial.author}
-                className="h-full"
-              />
-              <img
-                src={testimonialCircle}
-                alt="testimonialCircle"
-                className="absolute right-2 top-[40%]"
-              />
+          >
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={index}
+                className={`  absolute left-4 right-4 min-[500px]:relative grid grid-rows-2 
+                  min-w-[325px] min-h-fit h-[47.5vh] min-[500px]:h-auto  lg:min-w-[360px] lg:min-h-[350px] 
+                  mb-4 border border-black rounded-3xl overflow-hidden shadow-buttonShadow`}
+              >
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.author}
+                  className={`h-full w-full  ${
+                    activeIndex === index ? "scale-100" : "max-[500px]:scale-0"
+                  } transition-all duration-500 ease-in-out `}
+                />
+                <img
+                  src={testimonialCircle}
+                  alt="testimonialCircle"
+                  className="absolute right-2 top-[40%] z-10 max-[500px]:h-20"
+                />
 
-              <div className="bg-secondary text-white p-4 pt-14">
-                <p>{testimonial.text}</p>
-                <p className="flex items-center text-lg">
-                  <span className="w-8 h-0 px-2  border-t border-white"></span>
-                  &nbsp; {testimonial.author}
-                </p>
+                <div className={`${
+                  activeIndex === index ? "scale-100" : "max-[500px]:scale-0"
+                } transition-all duration-500 ease-in-out   bg-secondary text-white p-4 pt-10  min-[500px]:pt-14`}>
+                  <p className="max-[500px]:text-sm">{testimonial.text}</p>
+                  <p className="flex items-center text-lg">
+                    <span className="w-8 h-0 px-2  border-t border-white"></span>
+                    &nbsp; {testimonial.author}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
+            ))}
+          </div>
+          <div className="absolute bottom-4 left-0 p-4  w-full   flex justify-between  min-[500px]:hidden">
+            <button
+              onClick={previousIndex}
+              className="bg-secondary text-white p-2"
+            >
+              Previous
+            </button>
+            <button onClick={nextIndex} className="bg-secondary text-white p-2">
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </section>

@@ -29,7 +29,7 @@ export default function AboutSection() {
         // Reverse direction at the end of the range
         return prevPosition;
       });
-    }, 10); // Adjust the speed of the movement (lower value = faster movement)
+    }, 30); // Adjust the speed of the movement (lower value = faster movement)
 
     // Switch direction when reaching the endpoints
     if (compareImageSliderPosition >= 95) {
@@ -75,21 +75,22 @@ export default function AboutSection() {
   return (
     <section
       id="home-about"
-      className="relative py-20 lg:px-28 lg:flex justify-between gap-4"
+      className="relative min-h-[85vh]  lg:py-20 lg:px-28 lg:flex justify-between gap-4"
     >
-      <div className="lg:w-4/6  bg-white  flex flex-col justify-center  p-8 gap-6">
-        <div className="text-center">
+      <div className="lg:w-4/6  bg-white  flex flex-col justify-center  p-8 gap-2">
+        <div className="">
           <p className="text-secondary text-xl">About</p>
           <h4 className="text-2xl  lg:text-5xl">
             Crafting Spaces with Purpose and Passion
           </h4>
         </div>
-        <p className="text-xl font-light text-center">
+        <p className=" font-light text-justify text-lg">
           Welcome to <span className="font-normal">Interior Magnus,</span> where
           we believe that every space has the potential to inspire, comfort, and
-          elevate daily living. As experts in interior design and consultancy,
-          our mission is to create spaces that reflect the unique personalities,
-          tastes, and aspirations of our clients.
+          elevate daily living. As experts in interior design and consultancy.
+         <span className="max-[500px]:hidden">
+         our mission is to create spaces that reflect the unique personalities,
+          tastes, and aspirations of our clients. </span> 
         </p>
         <div className="slider-wrapper  overflow-hidden">
           <div
@@ -99,22 +100,22 @@ export default function AboutSection() {
             }  flex justify-between gap-4  text-nowrap`}
           >
             <div>
-              <h4 className="text-6xl">
-                130 <span className="text-secondary">+</span>
+              <h4 className="text-5xl  sm:text-6xl">
+                130<span className="text-secondary">+</span>
               </h4>
               <p className="text-lg">Projects Completed</p>
             </div>
 
             <div>
-              <h4 className="text-6xl">
-                4.5 <span className="text-secondary">+</span>
+              <h4 className="text-5xl  sm:text-6xl">
+                4.5<span className="text-secondary">+</span>
               </h4>
               <p className="text-lg">Years of Experience</p>
             </div>
 
             <div>
-              <h4 className="text-6xl">
-                1.5 <span className="text-secondary">K</span>
+              <h4 className="text-5xl  sm:text-6xl">
+                1.5<span className="text-secondary">K</span>
               </h4>
               <p className="text-lg">Trusted Customers</p>
             </div>

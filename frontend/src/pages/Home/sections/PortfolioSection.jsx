@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import portfolioImage1 from "/portfolio-image-1.jfif";
 import portfolioImage2 from "/portfolio-image-2.jfif";
 import portfolioImage3 from "/portfolio-image-3.jfif";
 import portfolioImage4 from "/portfolio-image-4.jfif";
 import { CircularProgress, Snackbar, Alert } from "@mui/material";
 import axios from "axios";
+// import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function PortfolioSection() {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -25,6 +26,8 @@ export default function PortfolioSection() {
   const [portfolioButtons, setPortfolioButtons] = useState([...defaultPortfolioButtons]);
   const [isLoading, setIsLoading] = useState(false);
   const [snackbarState,setSnackbarState] = useState({open:false,severity:"",message:""})
+  // const isMaxWidth500 = useMediaQuery('(min-width:500px)')
+
   const openSnackbar = (message, severity) => {
     setSnackbarState({open:true,severity,message})
   };
@@ -59,10 +62,23 @@ export default function PortfolioSection() {
   useEffect(() => {
     setActivePortfolioAndUpdatePortfolioImages(0,"end-to-end-offerings")
   }, []);
+  const [activeIndex,setActiveIndex]= useState(0)
+  const nextIndex = ()=>{
+    setActiveIndex(prev=>{
+      if(prev>= portfolioImages.length-1) return 0
+      return prev+1
+    })
+  }
+  const  previousIndex = ()=>{
+    setActiveIndex(prev=>{
+      if(prev<1) return (portfolioImages.length-1)
+      else return prev-1
+    })
+  }
   return (
     <section
       id="home-portfolio"
-      className="bg-primary py-10 px-5 lg:py-20  lg:pl-28"
+      className="min-h-[88.5vh]  bg-primary py-10 px-5 lg:py-20  lg:pl-28"
     >
       
       <div className="lg:w-2/4 flex flex-col text-center lg:text-left">
@@ -76,13 +92,13 @@ export default function PortfolioSection() {
         </p>
       </div>
 
-      <div className="flex justify-between gap-4  lg:w-3/5 mt-3 overflow-x-auto pr-2">
+      <div className="grid gap-4 md:flex grid-cols-2  mt-3 overflow-x-auto pr-2">
         {portfolioButtons.map((ele, index) => (
 
             <button
             key={index}
               onClick={() => setActivePortfolioAndUpdatePortfolioImages(index,ele.text.toLowerCase().split(" ").join("-"))}
-              className={`mb-4  bg-secondary text-white text-xl rounded-full p-2 px-4 border text-nowrap  ${
+              className={`mb-4  bg-secondary text-white text-sm  md:text-xl rounded-full p-2 md:px-4 border text-nowrap  ${
                 ele.isActive
                   ? "animate-shadow-appear border-black"
                   : "border-transparent"
@@ -103,20 +119,27 @@ export default function PortfolioSection() {
           />
         </div>
       ) : (
-        <div className="portfolio-images relative  flex gap-4 mt-5 overflow-x-scroll">
+          <Fragment>
+        <div className="portfolio-images relative min-h-[250px] flex gap-4 mt-5 overflow-hidden  min-[500px]:overflow-x-scroll">
+
           {portfolioImages.map((image, index) => (
-            <div key={index} className={`${index === 3 && "mr-8"}`}>
-              <div className="overflow-hidden h-[175px]  lg:h-[450px]  mb-6 border border-transparent hover:border-x-black hover:shadow-buttonShadow">
+            <div key={index} className={`transition-all duration-700  ${activeIndex === index ? 'scal-100' :'max-[500px]:scale-0'}  max-[500px]:absolute   max-[500px]:h-[250px] w-full   `}>
+              <div className="overflow-hidden h-full max-[500px]:w-full  lg:h-[450px]  mb-6 border border-transparent hover:border-x-black hover:shadow-buttonShadow">
                 <img
                   src={image}
                   alt={`portfolio-image-${index + 1}`}
-                  className="h-full  min-w-[175px]  lg:min-w-[435px] hover:scale-125 ease-in duration-300 "
+                  className="h-full w-full   lg:min-w-[435px] hover:scale-125 ease-in duration-300 "
                   loading="lazy"
-                />
+                  />
               </div>
             </div>
           ))}
         </div>
+          <div className="flex justify-between mt-4 min-[500px]:hidden">
+            <button onClick={previousIndex} className="bg-secondary text-white p-2">Previous</button>
+            <button onClick={nextIndex} className="bg-secondary text-white p-2">Next</button>
+          </div>
+          </Fragment>
       )}
       <div>
       <Snackbar

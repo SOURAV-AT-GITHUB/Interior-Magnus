@@ -68,7 +68,7 @@ useEffect(()=>{
             
             </div>
           <div className="w-fit m-auto mt-10">
-            <Button text="Send Message" color="primary"/>
+            <Button text="Get Quote" color="primary"/>
           </div>
           </form>
         </div>

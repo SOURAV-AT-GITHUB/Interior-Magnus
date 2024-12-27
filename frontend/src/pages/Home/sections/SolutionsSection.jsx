@@ -45,16 +45,30 @@ export default function SolutionsSection() {
     setSolutionsData([...updatedSolutionsData]);
   };
   const onMouseLeave = () => setSolutionsData([...defaultSolutionsData]);
-
+  const [activeIndex, setActiveIndex] = useState(1);
+  const nextIndex = () => {
+    setActiveIndex((prev) => {
+      if (prev >= solutionsData.length - 1) return 0;
+      return prev + 1;
+    });
+  };
+  const previousIndex = () => {
+    setActiveIndex((prev) => {
+      if (prev < 1) return solutionsData.length - 1;
+      else return prev - 1;
+    });
+  };
   return (
     <section
       id="home-solutions"
-      className="bg-white py-10 px-5  lg:py-20 lg:px-28 flex flex-col justify-between  lg:grid lg:grid-cols-2 gap-8"
+      className="relative min-h-[88.5vh]  bg-white py-10 px-5  lg:py-20 lg:px-28 flex flex-col justify-between  lg:grid lg:grid-cols-2 gap-4"
     >
-      <div className=" row-span-3 order-1 lg:order-none">
+      <div className=" row-span-3 lg:order-none">
         <p className="text-secondary text-xl">Solutions</p>
-        <h4 className="text-4xl">Design Solutions for Every Space</h4>
-        <p className="mt-4 pr-5 text-xl font-light">
+        <h4 className="text-3xl  min-[500px]:text-4xl">
+          Design Solutions for Every Space
+        </h4>
+        <p className="mt-4 pr-5 text-lg  min-[500px]:text-xl font-light">
           At <span className="font-normal">Interior Magnus,</span> we offer a
           full range of interior design solutions tailored to meet the unique
           needs of every client. From concept development to final touches, our
@@ -67,32 +81,33 @@ export default function SolutionsSection() {
       {solutionsData.map((solution, index) => (
         <div
           key={index}
-          className={`row-span-2 border rounded-xl cursor-default flex flex-col gap-2  py-8 px-4  ease-in duration-300 ${
+          className={`max-[500px]:absolute left-4 right-4  max-[500px]:bottom-28 ${
+            activeIndex === index
+              ? "scale-100 max-[500px]:bg-secondary max-[500px]:shadow-buttonShadow "
+              : "max-[500px]:scale-0"
+          }  row-span-2 border rounded-xl cursor-default flex flex-col gap-2 p-3  min-[500px]:py-8   ease-in duration-300 ${
             solution.isActive
-              ? " bg-secondary border-black shadow-buttonShadow  text-white"
-              : "border-transparent"
-          } ${
-            index === 0
-              ? "order-3 lg:order-none"
-              : index === 1
-              ? "order-2 lg:order-none"
-              : index === 2
-              ? "order-5 lg:order-none"
-              : index === 3
-              ? "order-4 lg:order-none"
-              : ""
-          }`}
+              ? " min-[500px]:bg-secondary border-black shadow-buttonShadow  text-white"
+              : "border-transparent max-[500px]:text-white"
+          } min-h-[36vh]`}
           onMouseEnter={() => onMouseEnter(index)}
           onMouseLeave={onMouseLeave}
         >
-          <solution.image
-            color={solution.isActive ? "white" : "secondary"}
-            isActive={solution.isActive}
-          />
+          <solution.image isActive={solution.isActive} />
           <p className="text-xl">{solution.title}</p>
-          <p className="leading-relaxed">{solution.description}</p>
+          <p className="leading-relaxed ">
+            {solution.description}
+          </p>
         </div>
       ))}
+      <div className="absolute bottom-2 left-0 px-4  w-full   flex justify-between  min-[500px]:hidden">
+        <button onClick={previousIndex} className="bg-secondary text-white p-2">
+          Previous
+        </button>
+        <button onClick={nextIndex} className="bg-secondary text-white p-2">
+          Next
+        </button>
+      </div>
     </section>
   );
 }

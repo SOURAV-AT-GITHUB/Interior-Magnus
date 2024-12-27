@@ -4,7 +4,7 @@ export default function RulerIcon({ isActive=false}) {
       width="40"
       height="40"
       viewBox="0 0 40 40"
-      className={`${isActive ? "fill-white" : "fill-secondary"} ease-in duration-300`}
+      className={`${isActive ? "fill-white" : "fill-secondary max-[500px]:fill-white"} ease-in duration-300`}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
