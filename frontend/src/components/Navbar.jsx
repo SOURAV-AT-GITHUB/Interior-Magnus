@@ -1,11 +1,21 @@
 import logo from "/logo.png";
 import hamburgerIcon from "/hamburger-icon.svg";
+import Drawer from '@mui/material/Drawer';
+import CloseIcon from '@mui/icons-material/Close';
 import { NavLink, useNavigate } from "react-router-dom";
 import {useEffect,useState} from 'react'
 export default function Navbar(props) {
   const {services} = props
   const navigate = useNavigate()
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen,setIsOpen] = useState(false)
+  const openDrawer = ()=> setIsOpen(true)
+  const closeDrawer = ()=> setIsOpen(false)
+  const handleNaviagte=(id)=>{
+
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' })
+    closeDrawer()
+  }
   // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
@@ -38,11 +48,12 @@ export default function Navbar(props) {
           src={hamburgerIcon}
           alt="menu"
           className="md:hidden self-center h-6"
+          onClick={openDrawer}
         />
 
         <ul className="hidden md:flex justify-between gap-4  lg:gap-8 ">
           <li className="flex items-center">
-            <a href="#home-about" className="hover:text-gray-400 ">
+            <a href="/#home-about" className="hover:text-gray-400 ">
               About Us
             </a>
           </li>
@@ -69,7 +80,7 @@ export default function Navbar(props) {
           </li>
 
           <li className="relative group flex items-center">
-            <a href="#home-portfolio" className="hover:text-gray-400">
+            <a href="/#home-portfolio" className="hover:text-gray-400">
               Portfolio
             </a>
             <ul className="absolute -left-8 top-10 hidden group-hover:flex flex-col gap-2  mt-9 bg-white border  rounded-lg  p-4 text-nowrap">
@@ -97,24 +108,52 @@ export default function Navbar(props) {
           </li>
 
           <li className="flex items-center">
-            <a href="#home-testimonials" className="hover:text-gray-400">
+            <a href="/#home-testimonials" className="hover:text-gray-400">
               Testimonials
             </a>
           </li>
 
           <li className="flex items-center">
-            <a href="#home-faq" className="hover:text-gray-400">
+            <a href="/#home-faq" className="hover:text-gray-400">
               FAQ
             </a>
           </li>
 
           <li className="flex items-center">
-            <a href="#home-contactus" className="hover:text-gray-400">
+            <a href="/#home-contactus" className="hover:text-gray-400">
               Contact Us
             </a>
           </li>
         </ul>
       </div>
+      <Drawer open={isOpen} onClose={closeDrawer} anchor="right"  >
+        <div className="max-w-[70vw] h-full  bg-secondary text-white font-medium text-lg">
+          <button onClick={closeDrawer}><CloseIcon fontSize="large"/></button>
+          <img src={logo} alt="" />
+          <ul className="flex flex-col gap-4 p-6">
+            <li onClick={()=>handleNaviagte('home-about')}>
+              About Us
+            </li>
+            <li > 
+            <a href="/services/modular-kitchen-designs">
+              Services
+            </a>
+            </li>
+            <li onClick={()=>handleNaviagte('home-portfolio')}> 
+             Portfolio
+            </li>
+            <li onClick={()=>handleNaviagte('home-testimonials')}> 
+             Testimonials
+            </li>
+            <li onClick={()=>handleNaviagte('home-faq')}> 
+             FAQ
+            </li>
+            <li onClick={()=>handleNaviagte('home-contactus')}> 
+             Contact Us
+            </li>
+          </ul>
+        </div>
+      </Drawer>
     </nav>
   );
 }
