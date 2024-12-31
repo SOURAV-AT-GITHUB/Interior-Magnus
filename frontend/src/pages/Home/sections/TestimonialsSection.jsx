@@ -72,7 +72,7 @@ export default function TestimonialsSection() {
   return (
     <section
       id="home-testimonials"
-      className="min-h-[86.5vh]  relative z-[1] overflow-hidden  bg-white py-10  lg:py-20 px-5  lg:pl-28 lg:pr-0"
+      className="relative z-[1] overflow-hidden  bg-white py-10  lg:py-20 px-5  lg:pl-28 lg:pr-0"
     >
       <div className=" absolute left-0 -top-8  -z-[1] flex ">
         <img
@@ -129,7 +129,7 @@ export default function TestimonialsSection() {
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
-                  className={`relative grid grid-rows-2 
+                  className={`relative flex flex-col
                   ${
                     !isMinWidth500
                       ? index === activeIndex
@@ -139,13 +139,13 @@ export default function TestimonialsSection() {
                   }
                   ${activeIndex === testimonials.length-1 && 'mr-1'}
                   transition-all duration-500 ease-in-out
-                  h-auto w-full lg:min-w-[360px] lg:min-h-[350px] 
+                  w-full min-w-[275px]  lg:min-w-[360px] lg:min-h-[500px] 
                   mb-4 border border-black rounded-3xl overflow-hidden shadow-buttonShadow`}
                 >
                   <img
                     src={testimonial.image}
                     alt={testimonial.author}
-                    className={`h-full w-full    `}
+                    className={`h-2/4 w-full    `}
                   />
                   <img
                     src={testimonialCircle}
@@ -154,9 +154,9 @@ export default function TestimonialsSection() {
                   />
 
                   <div
-                    className={` bg-secondary text-white p-4 pt-10  min-[500px]:pt-14`}
+                    className={`h-2/4 flex flex-col justify-center bg-secondary text-white p-4 `}
                   >
-                    <p className="max-[500px]:text-sm">{testimonial.text}</p>
+                    <p className="">{testimonial.text}</p>
                     <p className="flex items-center text-lg">
                       <span className="w-8 h-0 px-2  border-t border-white"></span>
                       &nbsp; {testimonial.author}
@@ -166,14 +166,14 @@ export default function TestimonialsSection() {
               ))}
             </div>
           </div>
-          <div className="w-full flex justify-between  min-[500px]:hidden z-10">
+          <div className="w-full flex justify-center gap-4  min-[500px]:hidden z-10">
             <button
               onClick={previousIndex}
-              className="border border-secondary text-secondary p-2"
+              className="min-w-16 border border-secondary text-secondary p-2"
             >
               <WestIcon />
             </button>
-            <button onClick={nextIndex} className="bg-secondary text-white p-2">
+            <button onClick={nextIndex} className="min-w-16 bg-secondary text-white p-2">
               <EastIcon />
             </button>
           </div>

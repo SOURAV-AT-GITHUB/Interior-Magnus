@@ -185,17 +185,17 @@ export default function PortfolioSection() {
         </div>
       </div>
 
-      <div className="flex justify-between mt-4 min-[500px]:hidden">
+      <div className="flex justify-center gap-4 mt-4 min-[500px]:hidden">
         <button
           onClick={previousIndex}
-          className="border-2 border-secondary text-secondary p-2 disabled:opacity-50 disabled:cursor-progress"
+          className="min-w-16  border-2 border-secondary text-secondary p-2 disabled:opacity-50 disabled:cursor-progress"
           disabled={isLoading}
         >
           <WestIcon />
         </button>
         <button
           onClick={nextIndex}
-          className="bg-secondary text-white p-2 disabled:opacity-50 disabled:cursor-progress"
+          className="min-w-16 bg-secondary text-white p-2 disabled:opacity-50 disabled:cursor-progress"
           disabled={isLoading}
         >
           <EastIcon />

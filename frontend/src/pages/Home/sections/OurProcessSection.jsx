@@ -35,7 +35,7 @@ export default function OurProcessSection() {
           <p className="text-primary lg:text-xl">Our Process</p>
           <p className="text-white text-2xl  lg:text-3xl">Bringing Your Vision to Life</p>
         </div>
-        <p className="text-white text-xl font-light  lg:w-4/6 m-auto">
+        <p className="text-white   lg:w-4/6 m-auto">
           From the initial consultation to the final reveal, we focus on
           understanding your unique style, planning meticulously, and executing
           with precision. Our process ensures a smooth experience and a stunning

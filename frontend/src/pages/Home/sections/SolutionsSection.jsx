@@ -64,7 +64,7 @@ export default function SolutionsSection() {
   return (
     <section
       id="home-solutions"
-      className="relative min-h-[88.5vh] flex flex-col justify-between  bg-white py-10 px-5  lg:py-20 lg:px-28  lg:grid lg:grid-cols-2 gap-4"
+      className="relative flex flex-col justify-between  bg-white py-10 px-5  lg:py-20 lg:px-28  lg:grid lg:grid-cols-2 gap-4"
     >
       <div className=" row-span-3 lg:order-none">
         <p className="text-secondary text-xl">Solutions</p>
@@ -130,14 +130,14 @@ export default function SolutionsSection() {
           ))}  </div>
         </div>
       )}
-      <div className="flex justify-between mt-4 min-[500px]:hidden">
+      <div className="flex justify-center gap-4 mt-4 min-[500px]:hidden">
         <button
           onClick={previousIndex}
-          className="border border-secondary text-secondary p-2"
+          className="min-w-16 border border-secondary text-secondary p-2"
         >
           <WestIcon />
         </button>
-        <button onClick={nextIndex} className="bg-secondary text-white p-2">
+        <button onClick={nextIndex} className="min-w-16 bg-secondary text-white p-2">
           <EastIcon />
         </button>
       </div>
