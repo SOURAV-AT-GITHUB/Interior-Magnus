@@ -1,6 +1,6 @@
 import logo from "/logo.png";
 import hamburgerIcon from "/hamburger-icon.svg";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {useEffect,useState} from 'react'
 export default function Navbar(props) {
   const {services} = props
@@ -58,9 +58,9 @@ export default function Navbar(props) {
                 <ul key={index} className="space-y-2">
                   {column.map((service) => (
                     <li key={service.service}>
-                      <a href="" className="hover:text-gray-400  my-4">
+                      <NavLink to={`/services/${service.service.toLowerCase().split(' ').join('-')}`} className="hover:text-gray-400  my-4">
                         {service.service}
-                      </a>
+                      </NavLink>
                     </li>
                   ))}
                 </ul>

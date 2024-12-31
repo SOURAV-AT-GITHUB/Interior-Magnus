@@ -69,6 +69,7 @@
   bottom: -25%;
   left: -30%;
   background-position: left;
+  z-index: -1;
 }
 #home-contactus::before {
   top: -20%;

@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -9,6 +9,7 @@ import AdminPanel from "./pages/Admin/AdminPanel";
 import UpdatePortfolios from "./pages/Admin/UpdatePortfolios";
 import UpdateServices from "./pages/Admin/UpdateServices";
 import axios from "axios";
+import Services from "./pages/Services/Services";
 function App() {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const [activeRoute,setActiveRoute] = useState('/')
@@ -135,6 +136,13 @@ function App() {
   useEffect(() => {
     getServices();
   },[]);
+  const HomeRedirect = ()=>{
+    const navigate = useNavigate()
+    useEffect(()=>{
+      navigate("/")
+    },[])
+    return (<></>)
+  }
   return (
     <>
      {activeRoute !== "/kitchen-price-calculator" && <Navbar services={services} />}
@@ -142,11 +150,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/kitchen-price-calculator" element={<KitchenPriceCalculator/>}/>
-        <Route path="/admin" element={<AdminPanel/>}>
+        <Route path="/admin" element={<AdminPanel />}>
              <Route path="update-portfolios" element={<UpdatePortfolios/>}/>
              <Route path="update-services" element={<UpdateServices services={services} setServices={setServices}/>}/>
         </Route>
-        <Route path="*" element={<p>Wrong page</p>}/>
+        <Route path="/services/:service" element={<Services services={services}/>}/>
+        <Route path="*" element={<HomeRedirect/>}/>
       </Routes>
 
      {activeRoute !== "/kitchen-price-calculator" && <Footer />}
