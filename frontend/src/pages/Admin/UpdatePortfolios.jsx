@@ -42,7 +42,6 @@ export default function UpdatePortfolios() {
       );
       openSnackbar(`Image added in ${category}'s portfolio`, "success");
     } catch (error) {
-      console.log(error.message);
       openSnackbar(
         `Failed to add the image in ${category}'s portfolio`,
         "error"
@@ -67,8 +66,6 @@ export default function UpdatePortfolios() {
       const response = axios.get(`${BACKEND_URL}/portfolio/${category}`);
       setPortFolio([...(await response).data.data]);
     } catch (error) {
-      console.log(error);
-
       openSnackbar(
         `Failed to load ${category}'s portfolio, please try again!`,
         "error"
@@ -87,13 +84,12 @@ export default function UpdatePortfolios() {
     setSelectedImage((prev) => ({ category: prev.category }));
   };
   const confirmDelete = async () => {
-    if (!selectedImage.public_id) {
+    if (!selectedImage.storagePath) {
       alert("This is a default image, can not be deleted!!");
       return;
     }
     setIsDeleting(true);
     try {
-      console.log(selectedImage);
 
       await axios.delete(
         `${BACKEND_URL}/portfolio/${selectedImage.category}/${selectedImage.id}`
@@ -103,8 +99,6 @@ export default function UpdatePortfolios() {
       openSnackbar(`Image deleted successfully`, "success");
       closeDeleteDialog();
     } catch (error) {
-      console.log(error.response);
-      
       openSnackbar(`Failed to delete the image, please,try again`, "error");
     } finally {
       setIsDeleting(false);

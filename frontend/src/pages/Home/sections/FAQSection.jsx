@@ -6,42 +6,42 @@ export default function FAQSection() {
               question:
                 "How do you determine the design style that best suits my space and personal preferences?",
               answer:
-                "We start by getting to know you, your lifestyle, and your aesthetic preferences. Using mood boards, style questionnaires, and visual references, we pinpoint elements that speak to you. ",
+                "At Interior Magnus, we understand your vision, lifestyle, and preferences through discussions and evaluate your space's layout and functionality. Using mood boards and renderings, we collaborate with you to finalize a design that reflects your style and needs.",
               isActive: false,
             },
             {
               question:
                 "What is the initial consultation process like, and what should I expect?",
               answer:
-                "We start by getting to know you, your lifestyle, and your aesthetic preferences. Using mood boards, style questionnaires, and visual references, we pinpoint elements that speak to you. ",
+                "Our consultation includes understanding your vision, assessing your space, discussing budget and timeline, and sharing initial ideas. It’s a collaborative process to align expectations and set the stage for your project.",
               isActive: false,
             },
             {
               question:
                 "What materials and finishes do you use, and how do you ensure quality in each project?",
               answer:
-                "We start by getting to know you, your lifestyle, and your aesthetic preferences. Using mood boards, style questionnaires, and visual references, we pinpoint elements that speak to you. ",
+                "We use premium materials and finishes, sourced from trusted vendors, tailored to your design and budget. Each project undergoes rigorous quality checks to ensure durability, functionality, and a flawless finish.",
               isActive: false,
             },
             {
               question:
                 "How flexible are your designs if I want to make adjustments during the project?",
               answer:
-                "We start by getting to know you, your lifestyle, and your aesthetic preferences. Using mood boards, style questionnaires, and visual references, we pinpoint elements that speak to you. ",
+                "Our designs are flexible, and we welcome your input throughout the project. Minor adjustments can be accommodated seamlessly, ensuring the final result meets your expectations",
               isActive: false,
             },
             {
               question:
                 "Do you offer post-completion support if I need further assistance with my space?",
               answer:
-                "We start by getting to know you, your lifestyle, and your aesthetic preferences. Using mood boards, style questionnaires, and visual references, we pinpoint elements that speak to you. ",
+                "Yes, we provide post-completion support to address any concerns or adjustments needed, ensuring you’re fully satisfied with your space.",
               isActive: false,
             },
             {
               question:
                 "What are the typical timelines for your projects, and how do you handle any unexpected delays?",
               answer:
-                "We start by getting to know you, your lifestyle, and your aesthetic preferences. Using mood boards, style questionnaires, and visual references, we pinpoint elements that speak to you. ",
+                "Timelines vary by project scope, but we provide clear schedules upfront. In case of unexpected delays, we promptly inform you and take necessary steps to minimize their impact.",
               isActive: false,
             },
           ]);

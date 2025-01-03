@@ -2,9 +2,12 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
+import { useEffect } from "react";
 export default function AdminPanel() {
   const location = useLocation();
-
+useEffect(()=>{
+window.scrollTo(0,0)
+},[location])
   return (
     <div className="pt-16  sm:pt-40 pb-10">
       {location.pathname.split("/")[2] ? (

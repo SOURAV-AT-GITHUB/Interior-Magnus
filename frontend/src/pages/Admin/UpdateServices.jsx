@@ -8,6 +8,7 @@ import {
   CircularProgress,
   Snackbar,
   Alert,
+  Skeleton,
 } from "@mui/material";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import axios from "axios";
@@ -30,7 +31,7 @@ export default function UpdateServices(props) {
   const confirmDelete = async (id) => {
     setIsDeleting(true);
     try {
-      await axios.delete(`${BACKEND_URL}/services/${id}`);
+      await axios.delete(`${BACKEND_URL}/services/all-categories/${id}`);
       setServices(
         services.map((innerArray) => {
           return innerArray.filter((ele) => ele.id !== id);
@@ -76,7 +77,7 @@ export default function UpdateServices(props) {
       service: event.target[1].value,
     };
     try {
-      const response = await axios.post(`${BACKEND_URL}/services`, newService);
+      const response = await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
       console.log(response);
       let temp = [...services];
       temp[newService.column - 1].push(newService);
@@ -112,7 +113,7 @@ export default function UpdateServices(props) {
     };
     try {
       await axios.patch(
-        `${BACKEND_URL}/services/${selectedService.id}`,
+        `${BACKEND_URL}/services/all-categories/${selectedService.id}`,
         updatedService
       );
       let temp = services.map((innerArray) => {
@@ -209,8 +210,8 @@ export default function UpdateServices(props) {
               <tr className="text-center w-full bg-secondary text-white px-1 border border-secondary">
                 <td colSpan={5}>Column {index + 1}</td>
               </tr>
-              {column.map((item, index) => (
-                <tr key={index}>
+              {column[0] ? column : Array.from({length:5}).map((item, index) => (
+          item ?      <tr key={index}>
                   <td className="border border-secondary p-1 text-center">
                     {index + 1}
                   </td>
@@ -236,7 +237,7 @@ export default function UpdateServices(props) {
                       Delete
                     </button>
                   </td>
-                </tr>
+                </tr> : <Skeleton key={index}/>
               ))}
             </Fragment>
           ))}

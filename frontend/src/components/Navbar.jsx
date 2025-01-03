@@ -1,21 +1,23 @@
 import logo from "/logo.png";
 import hamburgerIcon from "/hamburger-icon.svg";
-import Drawer from '@mui/material/Drawer';
-import CloseIcon from '@mui/icons-material/Close';
+import Drawer from "@mui/material/Drawer";
+import CloseIcon from "@mui/icons-material/Close";
 import { NavLink, useNavigate } from "react-router-dom";
-import {useEffect,useState} from 'react'
+import { useEffect, useState } from "react";
+import { Skeleton } from "@mui/material";
 export default function Navbar(props) {
-  const {services} = props
-  const navigate = useNavigate()
+  const { services } = props;
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
-  const [isOpen,setIsOpen] = useState(false)
-  const openDrawer = ()=> setIsOpen(true)
-  const closeDrawer = ()=> setIsOpen(false)
-  const handleNaviagte=(id)=>{
-
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' })
-    closeDrawer()
-  }
+  const [isOpen, setIsOpen] = useState(false);
+  const openDrawer = () => setIsOpen(true);
+  const closeDrawer = () => setIsOpen(false);
+  const handleNaviagte = (id) => {
+    document
+      .getElementById(id)
+      .scrollIntoView({ behavior: "smooth", block: "start" });
+    closeDrawer();
+  };
   // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
@@ -36,8 +38,15 @@ export default function Navbar(props) {
   }, []);
   return (
     <nav className="relative flex justify-center h-fit">
-      <div className={`h-auto fixed ${scrolled ? "w-full" : "md:w-11/12 md:mt-10 md:rounded-lg"}  px-4  md:px-10  flex justify-between bg-white md:border border-black z-10 `}>
-        <div onClick={()=>navigate('/')}  className="w-2/5  md:w-1/5 flex flex-col bg-white text-black cursor-pointer">
+      <div
+        className={`h-auto fixed ${
+          scrolled ? "w-full" : "md:w-11/12 md:mt-10 md:rounded-lg"
+        }  px-4  md:px-10  flex justify-between bg-white md:border border-black z-10 `}
+      >
+        <div
+          onClick={() => navigate("/")}
+          className="w-2/5  md:w-1/5 flex flex-col bg-white text-black cursor-pointer"
+        >
           <img src={logo} alt="" className="h-full" />
           <p className="self-end -mt-1  md:-mt-2  text-[0.40rem] md:text-[.6rem]  text-nowrap">
             Interior | Furniture | Design
@@ -67,13 +76,25 @@ export default function Navbar(props) {
             <ul className="absolute left-[-450%] top-10  mt-9 hidden group-hover:grid grid-cols-3 justify-between gap-5  min-w-max  bg-white border border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
               {services.map((column, index) => (
                 <ul key={index} className="space-y-2">
-                  {column.map((service) => (
-                    <li key={service.service}>
-                      <NavLink to={`/services/${service.service.toLowerCase().split(' ').join('-')}`} className="hover:text-gray-400  my-4">
-                        {service.service}
-                      </NavLink>
-                    </li>
-                  ))}
+                  {(column[0] ? column : Array.from({ length: 5 })).map(
+                    (service, index) =>
+                      
+                        <li key={index} className="hover:text-gray-400 m-2  min-w-32">
+                       {   service ? (
+                          <NavLink
+                            to={`/services/${service.service
+                              .toLowerCase()
+                              .split(" ")
+                              .join("-")}`}
+                            // className=""
+                          >
+                            {service.service}
+                          </NavLink>) :(
+                            <Skeleton/>
+                          )}
+                        </li>
+
+                  )}
                 </ul>
               ))}
             </ul>
@@ -101,7 +122,7 @@ export default function Navbar(props) {
               </li>
               <li>
                 <a href="" className="hover:text-gray-400">
-                  Wardrob
+                  Wardrobe
                 </a>
               </li>
             </ul>
@@ -126,31 +147,23 @@ export default function Navbar(props) {
           </li>
         </ul>
       </div>
-      <Drawer open={isOpen} onClose={closeDrawer} anchor="right"  >
+      <Drawer open={isOpen} onClose={closeDrawer} anchor="right">
         <div className="max-w-[70vw] h-full  bg-secondary text-white font-medium text-lg">
-          <button onClick={closeDrawer}><CloseIcon fontSize="large"/></button>
+          <button onClick={closeDrawer}>
+            <CloseIcon fontSize="large" />
+          </button>
           <img src={logo} alt="" />
           <ul className="flex flex-col gap-4 p-6">
-            <li onClick={()=>handleNaviagte('home-about')}>
-              About Us
+            <li onClick={() => handleNaviagte("home-about")}>About Us</li>
+            <li>
+              <a href="/services/modular-kitchen-designs">Services</a>
             </li>
-            <li > 
-            <a href="/services/modular-kitchen-designs">
-              Services
-            </a>
+            <li onClick={() => handleNaviagte("home-portfolio")}>Portfolio</li>
+            <li onClick={() => handleNaviagte("home-testimonials")}>
+              Testimonials
             </li>
-            <li onClick={()=>handleNaviagte('home-portfolio')}> 
-             Portfolio
-            </li>
-            <li onClick={()=>handleNaviagte('home-testimonials')}> 
-             Testimonials
-            </li>
-            <li onClick={()=>handleNaviagte('home-faq')}> 
-             FAQ
-            </li>
-            <li onClick={()=>handleNaviagte('home-contactus')}> 
-             Contact Us
-            </li>
+            <li onClick={() => handleNaviagte("home-faq")}>FAQ</li>
+            <li onClick={() => handleNaviagte("home-contactus")}>Contact Us</li>
           </ul>
         </div>
       </Drawer>
