@@ -105,7 +105,7 @@ export default function UpdatePortfolios() {
     }
   };
   return (
-    <div>
+    <main>
       <section>
         <div className=" w-fit m-auto flex gap-2 items-center text-4xl font-medium  mb-5">
           <p className="px-2">Add/Edit Portfolio Images</p>
@@ -251,6 +251,6 @@ export default function UpdatePortfolios() {
           {snackbarState.message}
         </Alert>
       </Snackbar>
-    </div>
+    </main>
   );
 }

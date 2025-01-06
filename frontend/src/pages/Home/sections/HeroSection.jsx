@@ -54,7 +54,7 @@ export default function HeroSection() {
               <img
                 src={image}
                 alt={`Hero-Image-${key + 1}`}
-                className="h-[88.5vh]  xl:h-screen  w-full"
+                className="h-[88.5vh]  xl:h-screen  w-full object-cover object-center"
               />
               <div className="absolute bottom-16 left-[50%] translate-x-[-50%] flex flex-col  items-center gap-4 w-full">
                 <h3 className=" bg-primary  text-2xl md:text-5xl  xl:text-7xl   text-center p-4 pt-0">

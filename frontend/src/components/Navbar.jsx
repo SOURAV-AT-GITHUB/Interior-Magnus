@@ -5,8 +5,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@mui/material";
-export default function Navbar(props) {
-  const { services } = props;
+import {useSelector} from 'react-redux'
+export default function Navbar() {
+  const {isLoading,isError,allServices }= useSelector(store=>store.allServices)
+
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -69,18 +71,26 @@ export default function Navbar(props) {
 
           <li className="relative group flex items-center">
             <p>
-              <a href="#services" className="hover:text-gray-400 h-full">
+              <a
+                href={`/services/${
+                  allServices[0][0] &&
+                  allServices[0][0].service.toLowerCase().split(" ").join("-")
+                }`}
+                className="hover:text-gray-400 h-full"
+              >
                 Services
               </a>
             </p>
-            <ul className="absolute left-[-450%] top-10  mt-9 hidden group-hover:grid grid-cols-3 justify-between gap-5  min-w-max  bg-white border border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
-              {services.map((column, index) => (
+            <ul className="absolute left-[-350%] top-10  mt-9 hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
+              {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
-                  {(column[0] ? column : Array.from({ length: 5 })).map(
-                    (service, index) =>
-                      
-                        <li key={index} className="hover:text-gray-400 m-2  min-w-32">
-                       {   service ? (
+                  {(isLoading ? Array.from({ length: 5 }) : column).map(
+                    (service, index) => (
+                      <li
+                        key={index}
+                        className="hover:text-gray-400 m-2  min-w-32"
+                      >
+                        {service ? (
                           <NavLink
                             to={`/services/${service.service
                               .toLowerCase()
@@ -89,11 +99,12 @@ export default function Navbar(props) {
                             // className=""
                           >
                             {service.service}
-                          </NavLink>) :(
-                            <Skeleton/>
-                          )}
-                        </li>
-
+                          </NavLink>
+                        ) : (
+                          <Skeleton />
+                        )}
+                      </li>
+                    )
                   )}
                 </ul>
               ))}

@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function UpdateServices(props) {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const { services, setServices } = props;
-
+const {isLoading,isError,allServices} = useSelector(store=>store.allServices)
   const [selectedService, setSelectedService] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isOpenDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -77,8 +78,7 @@ export default function UpdateServices(props) {
       service: event.target[1].value,
     };
     try {
-      const response = await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
-      console.log(response);
+      await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
       let temp = [...services];
       temp[newService.column - 1].push(newService);
       setServices([...temp]);
@@ -210,7 +210,7 @@ export default function UpdateServices(props) {
               <tr className="text-center w-full bg-secondary text-white px-1 border border-secondary">
                 <td colSpan={5}>Column {index + 1}</td>
               </tr>
-              {column[0] ? column : Array.from({length:5}).map((item, index) => (
+              {(column[0] ? column : Array.from({length:5})).map((item, index) => (
           item ?      <tr key={index}>
                   <td className="border border-secondary p-1 text-center">
                     {index + 1}
@@ -237,7 +237,10 @@ export default function UpdateServices(props) {
                       Delete
                     </button>
                   </td>
-                </tr> : <Skeleton key={index}/>
+                </tr> : <tr key={index}> 
+                  <td colSpan={5} ><Skeleton /></td>
+                  
+                   </tr>
               ))}
             </Fragment>
           ))}

@@ -32,6 +32,12 @@ window.scrollTo(0,0)
               <DesignServicesIcon />
             </button>
           </Link>
+          <Link to="update-service-images">
+            <button className="flex gap-2 items-center justify-center  text-xl  bg-primary text-white p-2 rounded">
+              <p>Add/Edit Service Images</p>
+              <AddToDriveIcon />
+            </button>
+          </Link>
         </div>
       )}
 

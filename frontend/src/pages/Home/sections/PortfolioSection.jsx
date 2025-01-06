@@ -175,7 +175,7 @@ export default function PortfolioSection() {
                   <img
                     src={image}
                     alt={`portfolio-image-${index + 1}`}
-                    className="h-full w-full   lg:min-w-[435px] hover:scale-125 ease-in duration-300 "
+                    className="h-full w-full object-cover object-center  lg:min-w-[435px] hover:scale-125 ease-in duration-300 "
                     loading="lazy"
                   />
                 </div>
