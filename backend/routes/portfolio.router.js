@@ -1,34 +1,26 @@
 const express = require("express");
 const portfolioRouter = express.Router();
-const axios = require("axios");
+
 require("dotenv").config();
 const multer = require("multer");
 const fs = require("fs");
-// const drive = require("../extra_learnings/drive.config");
-const cloudinary = require("../config/cloudinary.config");
+const {database,storageBucket,databaseBasePath,storageBasePath} = require('../config/firebase.config')
 const checkPortfolioCategory = require("../middlewares/checkPortfolioCategory");
-const BASE_URL = process.env.BASE_URL;
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads");
-  },
-  filename: (req, file, cb) => {
-    const { category } = req.params;
-    const date = Date.now();
-    req.date = date;
-    cb(null, `${file.originalname}-${category}-${date}`);
-  },
-});
-const upload = multer({ storage });
+
+const upload = multer({ storage: multer.memoryStorage() });
 portfolioRouter.get("/:category", checkPortfolioCategory, async (req, res) => {
   const { category } = req.params;
   try {
-    const response = await axios.get(`${BASE_URL}/portfolio/${category}.json`);
+    const portfolioRef = database.ref(`${databaseBasePath}/portfolio/${category}`)
+    const snapshot = await portfolioRef.once('value')
+    if(!snapshot.exists()){
+      return res.status(404).json({message:`No portfolio present in ${category} category`})
+    }
     res.json({
       message: "Request resolved",
       data: [
-        ...Object.entries(response.data).map(([id, element]) => ({
+        ...Object.entries(snapshot.val()).map(([id, element]) => ({
           id,
           ...element,
         })),
@@ -38,55 +30,42 @@ portfolioRouter.get("/:category", checkPortfolioCategory, async (req, res) => {
     res.status(500).json({ message: "Error in server, please try again" });
   }
 });
-
 portfolioRouter.post(
   "/:category",
   checkPortfolioCategory,
   upload.single("file"),
   async (req, res) => {
+    const date = Date.now()
     const { category } = req.params;
-    if (!req.file) {
-      res
+    const file =req.file
+    if (!file) {
+    return res
         .status(400)
         .json({ message: "Please provide a valid image in request body" });
     } else {
-      const filePath = req.file.path;
-      await cloudinary.uploader.upload(filePath, async (response) => {
-        if (response.error) {
-          res
-            .status(500)
-            .send({ message: "Error uploading file: ", error: response.error });
-        } else {
-          try {
-            const { public_id, url } = response;
-            const date = req.date;
-            await axios.post(`${BASE_URL}/portfolio/${category}.json`, {
-              public_id,
-              image: url,
-              date,
-            });
-            res.json({
-              message: `Image added to ${category}'s portfolio`,
-              data: {
-                public_id,
-                image: url,
-                date,
-              },
-            });
-          } catch (error) {
-            res.status(500).json({
-              message: `Image uploaded to cloudinary but error while stroing reference in database`,
-            });
-          } finally {
-            fs.unlinkSync(filePath);
-          }
+      try { //try-catch for file uploading
+        const storagePath = `${storageBasePath}/portfolio/${category}/${file.originalname}-${date}`
+        const fileUpload = storageBucket.file(storagePath)
+        await fileUpload.save(file.buffer,{
+          metadata:{contentType:file.mimetype}
+        })
+        const url = await fileUpload.getSignedUrl({
+          action:'read',
+          expires:"03-01-2100",
+        })
+        try { //trt-catch for image deatils storing
+          const imageData = {date,image:url[0],storagePath}
+          const imageRef = database.ref(`${storageBasePath}/portfolio/${category}`).push()
+          await imageRef.set(imageData)
+          res.status(201).json({message:"Image added",data:{id:imageData.key,...imageData}})
+        } catch (error) {
+          return res.status(500).json({message:"Error while saving image info to databse"})
         }
-      });
 
-      // } catch (error) {
-      //   console.error(error);
-      //   res.status(500).send("Error uploading file: " + error.message);
-      // }
+      } catch (error) {
+
+        return res.status(500).json({message:"Error while uploading image"})
+      }
     }
   }
 );
@@ -96,29 +75,19 @@ portfolioRouter.delete(
   async (req, res) => {
     const { category, id } = req.params;
     try {
-      const response = await axios.get(
-        `${BASE_URL}/portfolio/${category}/${id}.json`
-      );
-      if (!response.data) {
-        res
-          .status(404)
-          .json({ message: `No data found associated with ${id}` });
-      } else {
-        const { public_id } = response.data;
+      const imageRef = database.ref(`${databaseBasePath}/portfolio/${category}/${id}`)
+      const snapshot = await imageRef.once('value')
+      if(!snapshot.exists()){
+        return res.status(404).json({message:"Image not found in database"})
+      }else{
         try {
-          const cloudinaryResponse = await cloudinary.uploader.destroy(
-            public_id
-          );
-          if (cloudinaryResponse.result === "ok") {
-            await axios.delete(`${BASE_URL}/portfolio/${category}/${id}.json`);
-            res.json({ message: "Deleted successfully" });
-          } else {
-            res.status(500).json({ message: "Failed to delete image" });
-          }
+          const {storagePath} = snapshot.val()
+          const image = storageBucket.file(storagePath)
+          await image.delete()
+          await imageRef.remove()
+          return res.json({message:"Image deleted successfully"})
         } catch (error) {
-          res.status(500).json({
-            message: "Internal Server error while deleting, please try again.",
-          });
+          return res.status(500).json({message:"Failed to delete image, please try again"})
         }
       }
     } catch (error) {
