@@ -11,6 +11,19 @@ useEffect(()=>{
  let interval =  setInterval(()=>setIsLeft(prev=>!prev),1500)
  return ()=> clearInterval(interval)
 },[])
+const handleMailSending =(event)=>{
+  event.preventDefault()
+  const subject = "Inquiry about your product";
+  const firstname = event.target[0].value
+  const lastname = event.target[1].value
+  const email = event.target[2].value
+  const contact = event.target[3].value
+  const message = event.target[4].value
+  let body = `Hello,%0D%0A%0D%0A${message.split(' ').join("%20")}%0D%0A%0d%0A${firstname}%20${lastname}%0D%0AContact%20Number%20%3A%20${contact}`
+  if(email) body += `%0D%0AEmail%20%3A%20${email}`
+  const mailToLink =`mailto:yash.techtitudetribe@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
+  window.location.href = mailToLink
+}
   return (
       <section id="home-contactus" className=" relative bg-white py-10 lg:pb-0 lg:pt-20 px-5 lg:px-28 flex flex-col gap-6 lg:grid grid-cols-2 grid-rows-3 overflow-hidden "
       >
@@ -38,13 +51,10 @@ useEffect(()=>{
         </div>  
 
         <div className="lg:order-3 row-span-2">
-          <form onSubmit={(e)=>{
-            e.preventDefault()
-            alert("Message sent.")
-          }}>
+          <form onSubmit={handleMailSending}>
             <div className="grid grid-cols-2 gap-8">
             <div className="input-container"> 
-              <input type="text" placeholder=" " name="first-name" required/>
+              <input type="text" placeholder=" " name="first-name"  required/>
               <label htmlFor="first-name">First Name</label>
             </div>
             <div className="input-container"> 
@@ -52,7 +62,7 @@ useEffect(()=>{
               <label htmlFor="last-name">Last Name</label>
             </div>
             <div className="input-container col-span-2"> 
-              <input type="text" placeholder=" " name="email" required/>
+              <input type="text" placeholder=" " name="email" />
               <label htmlFor="email">E-mail</label>
             </div>
             <div className="input-container col-span-2"> 

@@ -92,7 +92,13 @@ const {isLoading,isError} = services
     }
     getData();
   }, [service]);
-
+  const handleMailSending = (title,size=null)=>{
+    const subject = "Inquiry about your product";
+    let body = `Hello,%0D%0AI%20want%20to%20know%20more%20about%20${title}%20poduct`
+    if(size) body+=`%20with%20size%20${size}.`
+    const mailToLink = `mailto:yash.techtitude@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
+    window.location.href = mailToLink
+  }
   return (
     <main className="min-h-screen p-8 pt-16 sm:p-16 sm:pt-40 ">
       <div className="relative ">
@@ -128,7 +134,7 @@ const {isLoading,isError} = services
                     className={`font-medium  ${
                       item.service.toLowerCase().split(" ").join("-") ===
                       service
-                        ? "text-red-600"
+                        ? "text-secondary"
                         : "text-slate-600"
                     }`}
                   >
@@ -176,12 +182,12 @@ const {isLoading,isError} = services
                   />
                   <div className="p-3 pb-5 flex flex-col gap-1">
                     <p className="text-lg font-medium">{item.title}</p>
-                    <p className="text-lg text-slate-700">Size : {item.size}</p>
+                 { item.size &&  <p className="text-lg text-slate-700">Size : {item.size}</p>}
                     <div className="flex items-center justify-center gap-2 mt-3">
                       <button className="p-3 w-2/3 rounded-full bg-white text-secondary border border-secondary">
                         Book Free Consultation
                       </button>
-                      <button className="p-3 w-1/3 rounded-full bg-secondary text-white font-semibold">
+                      <button onClick={()=>handleMailSending(item.title,item.size)} className="p-3 w-1/3 rounded-full bg-secondary text-white font-semibold">
                         Get Quote
                       </button>
                     </div>

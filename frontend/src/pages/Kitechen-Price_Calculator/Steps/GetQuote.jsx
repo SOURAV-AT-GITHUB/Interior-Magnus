@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   // TextField,
   MenuItem,
   Select,
   InputAdornment,
   FormControl,
-  InputLabel,
+  // InputLabel,
   OutlinedInput,
 } from "@mui/material";
 import FlagIcon from "react-world-flags";
@@ -13,13 +13,8 @@ import { pink } from "@mui/material/colors";
 import Checkbox from "@mui/material/Checkbox";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-export default function GetQuote() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    property: "",
-  });
+export default function GetQuote(props) {
+  const { selections, setSelections } = props;
   const countries = [
     { code: "+1", flag: "US" },
     { code: "+44", flag: "GB" },
@@ -36,6 +31,9 @@ export default function GetQuote() {
   const handleCountryCodeChange = (e) => {
     setCountryCode(e.target.value);
   };
+  useEffect(()=>{
+    setSelections(prev=>({...prev,phone:`${countryCode} ${phoneNumber}`}))
+  },[countryCode,phoneNumber])
   return (
     <div className="sm:w-2/4 m-auto ">
       <h4 className="text-enter font-medium text-xl mb-3">
@@ -45,7 +43,7 @@ export default function GetQuote() {
         <div className="relative">
           <label
             htmlFor="name"
-            className={`absolute ${formData.name && "top-0"}  bg-white px-1`}
+            className={`absolute ${selections.name && "top-0"}  bg-white px-1`}
           >
             Name
           </label>
@@ -54,15 +52,15 @@ export default function GetQuote() {
             type="text"
             placeholder=""
             className="py-4"
-            value={formData.name}
-            onInput={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={selections.name}
+            onInput={(e) => setSelections(prev=>({ ...prev, name: e.target.value }))}
           />
         </div>
 
         <div className="relative">
           <label
             htmlFor="email"
-            className={`absolute ${formData.email && "top-0"}  bg-white px-1`}
+            className={`absolute ${selections.email && "top-0"}  bg-white px-1`}
           >
             Email ID
           </label>
@@ -71,8 +69,8 @@ export default function GetQuote() {
             type="email"
             placeholder=""
             className="py-4"
-            value={formData.email}
-            onInput={(e) => setFormData({ ...formData, email: e.target.value })}
+            value={selections.email}
+            onInput={(e) => setSelections(prev=>({ ...prev, email: e.target.value }))}
           />
         </div>
 
@@ -80,7 +78,6 @@ export default function GetQuote() {
           <FormControl className="w-full">
             <OutlinedInput
               type="number"
-              le
               placeholder="Phone Number"
               value={phoneNumber}
               onChange={handlePhoneChange}
@@ -106,7 +103,7 @@ export default function GetQuote() {
                       },
                       backgroundColor: "transparent", // Make the background of the Select transparent
                     }}
-                    disableUnderline // Remove underline from the select
+                    // disableUnderline // Remove underline from the select
                   >
                     {countries.map((country) => (
                       <MenuItem
@@ -149,7 +146,7 @@ export default function GetQuote() {
           <label
             htmlFor="property-name"
             className={`absolute ${
-              formData.property && "top-0"
+              selections.property && "top-0"
             } z-0  bg-white px-1`}
           >
             Property Name
@@ -159,9 +156,9 @@ export default function GetQuote() {
             type="text"
             placeholder=""
             className="py-4"
-            value={formData.property}
+            value={selections.property}
             onInput={(e) =>
-              setFormData({ ...formData, property: e.target.value })
+              setSelections(prev=>({ ...prev, property: e.target.value }))
             }
           />
         </div>

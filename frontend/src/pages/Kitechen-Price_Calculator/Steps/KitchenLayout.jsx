@@ -11,7 +11,10 @@ export default function KitchenLayout(props) {
           : { ...layout, isSelected: false }
       )
     );
-    setSelections({ ...selections, layout: layouts[i].text });
+    let measurements = {"A":3}
+    if(i!==1) measurements["B"]=3
+    if(i===2) measurements["C"] = 3
+    setSelections({ ...selections, layout: layouts[i].text,measurements });
   };
 
   return (

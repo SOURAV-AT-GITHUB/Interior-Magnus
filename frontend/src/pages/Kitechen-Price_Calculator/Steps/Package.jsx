@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 export default function Package(props) {
-  const {packages, setPackages} = props;
+  const {packages, setPackages,setSelections} = props;
   const handlePackageSelect = (i) =>{
     setPackages(
       packages.map((item, index) =>
@@ -9,6 +9,7 @@ export default function Package(props) {
           : { ...item, isSelected: false }
       )
     );
+    setSelections(prev=>({...prev,package:packages[i].title}))
   }
 
 

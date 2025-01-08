@@ -48,8 +48,8 @@ const CustomStepIcon = (props) => {
       }}
     >
       {completed ? <Check style={{ color: "white", fontSize: 14 }} /> : null}
-      {!completed && !active && <span  ></span>}
-      {active && !completed && <span ></span>}
+      {!completed && !active && <span></span>}
+      {active && !completed && <span></span>}
     </div>
   );
 };
@@ -154,9 +154,30 @@ export default function KitchenPriceCalculator() {
       isSelected: false,
     },
   ]);
-  const [selections, setSelections] = useState({ layout: null });
+  const [selections, setSelections] = useState({
+    layout: null,
+    name: "",
+    email: "",
+    phone: "",
+    propertyName: "",
+  });
 
+  const handleNext = () => {
+    if (activeStep < 3) setActiveStep((prev) => prev + 1);
+    else {
+      const subject  = `Enquiry about ${selections.layout} kitchen`
+      let body = `Hello, \n\n I want to know the estimate for ${selections.layout} kitchen for the following details : \n Layout : ${selections.layout} \nMeasurements : \n A=${selections.measurements["A"]}`
+      if(selections.measurements["B"]) body +=`\n B=${selections.measurements["B"]}`
+      if(selections.measurements["C"]) body +=`\n C=${selections.measurements["C"]}`
+      body+=`\nPackage: ${selections.package}`
+      body +=`\n\n${selections.name}`
+      if(selections.email) body+=`\nEmail : ${selections.email}`
+      body+=`\nContact : ${selections.phone}`
 
+      const mailToLink = `mailto:yash.techtitudetribe@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      window.location.href = mailToLink
+    }
+  };
   return (
     <div>
       <nav className="fixed top-0 left-0 right-0 z-10 bg-white  p-4 sm:px-8 grid grid-cols-2 gap-5   sm:flex sm:justify-between items-center shadow-lg">
@@ -174,7 +195,13 @@ export default function KitchenPriceCalculator() {
                   <CustomStepIcon {...props} icon={index + 1} />
                 )}
               >
-                 <p className={`${activeStep === index ? "block" : "hidden sm:block"} text-[8px] text-nowrap  font-bold  sm:text-base`}>{label}</p>
+                <p
+                  className={`${
+                    activeStep === index ? "block" : "hidden sm:block"
+                  } text-[8px] text-nowrap  font-bold  sm:text-base`}
+                >
+                  {label}
+                </p>
               </StepLabel>
             </Step>
           ))}
@@ -199,9 +226,13 @@ export default function KitchenPriceCalculator() {
               setSelections={setSelections}
             />
           ) : activeStep === 2 ? (
-            <Package packages={packages} setPackages={setPackages} />
+            <Package
+              packages={packages}
+              setPackages={setPackages}
+              setSelections={setSelections}
+            />
           ) : (
-            <GetQuote />
+            <GetQuote selections={selections} setSelections={setSelections} />
           )}
         </div>
         <div className="fixed sm:w-[50vw] sm:min-w-[300px] bottom-0 left-0 right-0 m-auto  flex justify-between mt-4 p-4 bg-white">
@@ -218,13 +249,12 @@ export default function KitchenPriceCalculator() {
           <button
             color="error"
             className="w-fit px-6  rounded-full bg-red-500 text-white disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-slate-400"
-            onClick={() => setActiveStep((prev) => prev + 1)}
+            onClick={handleNext}
             disabled={
               activeStep >= steps.length ||
-              (activeStep === 2 &&
-                packages.every((item) => item.isSelected === false)) ||
-                (activeStep===0 && !selections.layout) ||
-                activeStep >3
+              (activeStep === 0 && !selections.layout) ||
+              (activeStep === 2 && !selections.package) ||
+              activeStep > 3
             }
           >
             {activeStep === 3 ? "GET MY ESTIMATE" : "NEXT"}

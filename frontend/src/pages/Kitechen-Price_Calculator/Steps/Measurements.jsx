@@ -29,20 +29,15 @@ export default function Measurements(props) {
       <div className="flex items-center justify-around font-medium text-lg">
         <p>A</p>
         <select
-          name=""
-          id=""
           className="w-[80%] p-2 border border-slate-300 rounded-md "
+          value={selections.measurements["A"]}
+          onChange={(e)=>setSelections(prev=>({
+            ...prev,measurements:{...prev.measurements,"A":Number(e.target.value)}
+          }))}
         >
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
+          {Array.from({length:10}).map((_,index)=>(
+            <option value={index+3} key={index}>{index+3}</option>
+          ))}
         </select>
         <p>ft.</p>
       </div>
@@ -51,20 +46,15 @@ export default function Measurements(props) {
         <div className="flex items-center justify-around font-medium text-lg">
           <p>B</p>
           <select
-            name=""
-            id=""
             className="w-[80%] p-2 border border-slate-300 rounded-md "
+            value={selections.measurements["B"]}
+            onChange={(e)=>setSelections(prev=>({
+              ...prev,measurements:{...prev.measurements,"B":Number(e.target.value)}
+            }))}
           >
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
+          {Array.from({length:10}).map((_,index)=>(
+            <option value={index+3} key={index}>{index+3}</option>
+          ))}
           </select>
           <p>ft.</p>
         </div>
@@ -73,20 +63,15 @@ export default function Measurements(props) {
         <div className="flex items-center justify-around font-medium text-lg">
           <p>C</p>
           <select
-            name=""
-            id=""
+                    value={selections.measurements["C"]}
+                    onChange={(e)=>setSelections(prev=>({
+                      ...prev,measurements:{...prev.measurements,"C":Number(e.target.value)}
+                    }))}
             className="w-[80%] p-2 border border-slate-300 rounded-md "
           >
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
+          {Array.from({length:10}).map((_,index)=>(
+            <option value={index+3} key={index}>{index+3}</option>
+          ))}
           </select>
           <p>ft.</p>
         </div>

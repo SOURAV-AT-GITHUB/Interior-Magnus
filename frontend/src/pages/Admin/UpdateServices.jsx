@@ -12,12 +12,17 @@ import {
 } from "@mui/material";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import axios from "axios";
-import { useSelector } from "react-redux";
-
+import { 
+  // useDispatch,
+   useSelector } from "react-redux";
+// import {addNewService} from '../../Store/allServices.action'
 export default function UpdateServices(props) {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const { services, setServices } = props;
-const {isLoading,isError,allServices} = useSelector(store=>store.allServices)
+  const { isLoading, isError, allServices } = useSelector(
+    (store) => store.allServices
+  );
+  // const dispatch = useDispatch()
   const [selectedService, setSelectedService] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isOpenDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -77,6 +82,7 @@ const {isLoading,isError,allServices} = useSelector(store=>store.allServices)
       column: Number(event.target[0].value),
       service: event.target[1].value,
     };
+// dispatch(addNewService(newService),openSnackbar,closeAddnewDialog)
     try {
       await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
       let temp = [...services];
@@ -164,7 +170,7 @@ const {isLoading,isError,allServices} = useSelector(store=>store.allServices)
               <option value="">Select Column Number</option>
               <option value="1">1</option>
               <option value="2">2</option>
-              <option value="3">3</option>
+              {/* <option value="3">3</option> */}
             </select>
             <input
               required
@@ -174,10 +180,10 @@ const {isLoading,isError,allServices} = useSelector(store=>store.allServices)
             />
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isLoading}
               className="bg-secondary text-white py-1 rounded text-xl"
             >
-              {isSubmitting ? (
+              {isLoading ? (
                 <CircularProgress color="white" />
               ) : (
                 <p className="text-2xl">Add</p>
@@ -205,43 +211,51 @@ const {isLoading,isError,allServices} = useSelector(store=>store.allServices)
           </tr>
         </thead>
         <tbody>
-          {services.map((column, index) => (
+          {allServices.map((column, index) => (
             <Fragment key={index}>
               <tr className="text-center w-full bg-secondary text-white px-1 border border-secondary">
                 <td colSpan={5}>Column {index + 1}</td>
               </tr>
-              {(column[0] ? column : Array.from({length:5})).map((item, index) => (
-          item ?      <tr key={index}>
-                  <td className="border border-secondary p-1 text-center">
-                    {index + 1}
-                  </td>
-                  <td className="border border-secondary p-1 text-center">
-                    {item.service}
-                  </td>
-                  <td className="border border-secondary p-1 text-center">
-                    {item.column}
-                  </td>
-                  <td className="border border-secondary p-1 text-center">
-                    <button
-                      onClick={() => openEditServiceDialog({ ...item, index })}
-                      className="border p-1 px-4 bg-primary text-white rounded"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td className="border border-secondary p-1 text-center">
-                    <button
-                      onClick={() => openDeleteDialog(item)}
-                      className="border p-1 px-4 bg-red-500 text-white rounded"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr> : <tr key={index}> 
-                  <td colSpan={5} ><Skeleton /></td>
-                  
-                   </tr>
-              ))}
+              {(column[0] ? column : Array.from({ length: 5 })).map(
+                (item, index) =>
+                  item ? (
+                    <tr key={index}>
+                      <td className="border border-secondary p-1 text-center">
+                        {index + 1}
+                      </td>
+                      <td className="border border-secondary p-1 text-center">
+                        {item.service}
+                      </td>
+                      <td className="border border-secondary p-1 text-center">
+                        {item.column}
+                      </td>
+                      <td className="border border-secondary p-1 text-center">
+                        <button
+                          onClick={() =>
+                            openEditServiceDialog({ ...item, index })
+                          }
+                          className="border p-1 px-4 bg-primary text-white rounded"
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td className="border border-secondary p-1 text-center">
+                        <button
+                          onClick={() => openDeleteDialog(item)}
+                          className="border p-1 px-4 bg-red-500 text-white rounded"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr key={index}>
+                      <td colSpan={5}>
+                        <Skeleton />
+                      </td>
+                    </tr>
+                  )
+              )}
             </Fragment>
           ))}
         </tbody>

@@ -50,14 +50,24 @@ export const getAllServices = () => {
     }
   };
 };
-export const addNewService = (newService,openSnackbar)=>{
+export const addNewService = (newService,openSnackbar,closeAddnewDialog)=>{
   return async (dispatch) =>{
     dispatch(addNewServiceRequest())
 try {
   await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
   dispatch(addNewServiceSuccess(newService))
+  openSnackbar(
+    `${newService.service} added to column ${newService.column}`,
+    'success'
+  );
 } catch (error) {
   dispatch(addNewServiceError( error.response.message || error.messagge  ))
+  openSnackbar(
+    `Failed to ${newService.service} add to column ${newService.column}`,
+    'error'
+  );
+}finally{
+  closeAddnewDialog()
 }
   }
 }
