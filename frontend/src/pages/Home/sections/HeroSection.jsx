@@ -1,6 +1,6 @@
 import heroImage1 from "/hero-image-1.jfif";
-import heroImage2 from "/hero-image-2.jfif";
-import heroImage3 from "/hero-image-3.jfif";
+import heroImage2 from "/hero-image-2.jpg";
+import heroImage3 from "/hero-image-3.jpg";
 import Button from "../../../components/Button";
 import { Slide } from "react-slideshow-image";
 import { useEffect, useState, useRef } from "react";
