@@ -24,7 +24,7 @@ export default function KitchenLayout(props) {
       </h4>
       <p className="">
         Want to know more.{" "}
-        <span className="text-red-600 font-medium cursor-pointer">
+        <span className="text-secondary font-medium cursor-pointer">
           Click here
         </span>
       </p>
@@ -34,13 +34,13 @@ export default function KitchenLayout(props) {
             onClick={() => handleLayoutSelect(index)}
             key={index}
             className={`relative ${index === 3 && "col-start-2"}  ${
-              layout.isSelected ? " border-red-500" : "border-transparent"
+              layout.isSelected ? " border-secondary" : "border-transparent"
             } border-2 rounded-md overflow-hidden cursor-pointer`}
           >
             <div
               className={`absolute right-4 top-4 rounded-full bg-white  ${
                 layout.isSelected
-                  ? "border-[6px] border-red-500"
+                  ? "border-[6px] border-secondary"
                   : "border-slate-700"
               } h-[20px] w-[20px] border p-1`}
             ></div>

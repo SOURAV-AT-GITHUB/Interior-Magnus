@@ -9,7 +9,7 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import FlagIcon from "react-world-flags";
-import { pink } from "@mui/material/colors";
+import { pink,teal } from "@mui/material/colors";
 import Checkbox from "@mui/material/Checkbox";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -132,9 +132,9 @@ export default function GetQuote(props) {
               {...label}
               defaultChecked
               sx={{
-                color: pink[800],
+                color: teal[800],
                 "&.Mui-checked": {
-                  color: pink[400],
+                  color: teal[400],
                 },
               }}
             />
@@ -167,22 +167,22 @@ export default function GetQuote(props) {
       <div className="mt-8 mb-16  grid gap-2">
         <p>
           By submitting this form, you agree to the{" "}
-          <a href="" className="text-red-500">
+          <a href="" className="text-secondary">
             privacy policy
           </a>{" "}
           &{" "}
-          <a href="" className="text-red-500">
+          <a href="" className="text-secondary">
             terms and conditions
           </a>
         </p>
 
         <p>
           This site is protected by reCAPTCHA and the Google{" "}
-          <a href="" className="text-red-500">
+          <a href="" className="text-secondary">
             Privacy Policy
           </a>{" "}
           and{" "}
-          <a href="" className="text-red-500">
+          <a href="" className="text-secondary">
             Terms of Service
           </a>{" "}
           apply.

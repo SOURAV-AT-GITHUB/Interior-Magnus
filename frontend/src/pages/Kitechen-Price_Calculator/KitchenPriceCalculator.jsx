@@ -238,7 +238,7 @@ export default function KitchenPriceCalculator() {
         <div className="fixed sm:w-[50vw] sm:min-w-[300px] bottom-0 left-0 right-0 m-auto  flex justify-between mt-4 p-4 bg-white">
           <button
             color="error"
-            className="w-24 text-red-600 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-24 text-secondary disabled:opacity-60 disabled:cursor-not-allowed"
             onClick={() => setActiveStep((prev) => prev - 1)}
             disabled={activeStep < 1}
           >
@@ -248,7 +248,7 @@ export default function KitchenPriceCalculator() {
           <br />
           <button
             color="error"
-            className="w-fit px-6  rounded-full bg-red-500 text-white disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-slate-400"
+            className="w-fit px-6  rounded-full bg-secondary text-white disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-slate-400"
             onClick={handleNext}
             disabled={
               activeStep >= steps.length ||
