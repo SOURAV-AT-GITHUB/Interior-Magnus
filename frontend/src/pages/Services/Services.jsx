@@ -173,7 +173,7 @@ const {isLoading,isError} = services
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
             {data?.images[0] &&
               data.images.map((item, index) => (
-                <div key={index} className="border-2 shadow-2xl max-h-[450px]">
+                <div key={index} className="border-2 shadow-2xl max-h-[450px] pb-4 sm:pb-0">
                   <img
                     src={item.image}
                     alt={item.title}
@@ -183,7 +183,7 @@ const {isLoading,isError} = services
                   <div className="p-3 pb-5 flex flex-col gap-1">
                     <p className="text-lg font-medium">{item.title}</p>
                  { item.size &&  <p className="text-lg text-slate-700">Size : {item.size}</p>}
-                    <div className="flex items-center justify-center gap-2 mt-3">
+                    <div className="text-sm flex items-center justify-center gap-2 mt-3">
                       <button className="p-3 w-2/3 rounded-full bg-white text-secondary border border-secondary">
                         Book Free Consultation
                       </button>
