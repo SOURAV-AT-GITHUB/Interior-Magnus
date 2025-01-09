@@ -27,10 +27,15 @@ export default function Home() {
     <main className="relative">
       {isMinWidth500 ? (
         <div className="fixed right-0 bottom-0 w-fit h-fit z-10 flex flex-col">
-          <a href="https://wa.me/+919910888045?text=Hello%20there" target="_blank">
-          <img src={whatsappIcon} alt="whatsapp-icon" className="h-24" />
+          <a
+            href="https://wa.me/+919910888045?text=Hello%20there"
+            target="_blank"
+          >
+            <img src={whatsappIcon} alt="whatsapp-icon" className="h-24" />
           </a>
-          <img src={phoneIcon} alt="phone-icon" className="h-24" />
+          <a href="tel:+919910888045">
+            <img src={phoneIcon} alt="phone-icon" className="h-24" />
+          </a>
         </div>
       ) : (
         <div className={`fixed right-0 bottom-2  z-10  `}>
@@ -39,25 +44,30 @@ export default function Home() {
               isOpen ? "h-auto " : "h-0"
             } transition-transform duration-300 ease-linear`}
           >
-            <a href="https://wa.me/+919910888045?text=Hello%20there" target="_blank">
-            <img
-              src={whatsappIcon}
-              className={`h-20 ${
-                isOpen
-                  ? "translate-y-0 rotate-0"
-                  : "translate-y-[4.5rem] -rotate-45 opacity-0"
-              } transition duration-200 ease-in-out z-0`}
-            />
-</a>
-            <img
-              src={phoneIcon}
-              alt="phone-icon"
-              className={`h-20 ${
-                isOpen
-                  ? "translate-y-0 rotate-0 "
-                  : "translate-y-[4.5rem] -rotate-45 opacity-0"
-              } transition duration-200 ease-in z-0`}
-            />
+            <a
+              href="https://wa.me/+919910888045?text=Hello%20there"
+              target="_blank"
+            >
+              <img
+                src={whatsappIcon}
+                className={`h-20 ${
+                  isOpen
+                    ? "translate-y-0 rotate-0"
+                    : "translate-y-[4.5rem] -rotate-45 opacity-0"
+                } transition duration-200 ease-in-out z-0`}
+              />
+            </a>
+            <a href="tel:+919910888045">
+              <img
+                src={phoneIcon}
+                alt="phone-icon"
+                className={`h-20 ${
+                  isOpen
+                    ? "translate-y-0 rotate-0 "
+                    : "translate-y-[4.5rem] -rotate-45 opacity-0"
+                } transition duration-200 ease-in z-0`}
+              />
+            </a>
           </div>
 
           <button
