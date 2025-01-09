@@ -96,7 +96,7 @@ const {isLoading,isError} = services
     const subject = "Inquiry about your product";
     let body = `Hello,%0D%0AI%20want%20to%20know%20more%20about%20${title}%20poduct`
     if(size) body+=`%20with%20size%20${size}.`
-    const mailToLink = `mailto:yash.techtitude@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
+    const mailToLink = `mailto:hello@interiormagnus.com?subject=${encodeURIComponent(subject)}&body=${body}`
     window.location.href = mailToLink
   }
   return (

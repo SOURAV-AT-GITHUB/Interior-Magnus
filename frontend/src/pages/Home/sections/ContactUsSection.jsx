@@ -21,7 +21,7 @@ const handleMailSending =(event)=>{
   const message = event.target[4].value
   let body = `Hello,%0D%0A%0D%0A${message.split(' ').join("%20")}%0D%0A%0d%0A${firstname}%20${lastname}%0D%0AContact%20Number%20%3A%20${contact}`
   if(email) body += `%0D%0AEmail%20%3A%20${email}`
-  const mailToLink =`mailto:yash.techtitudetribe@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
+  const mailToLink =`mailto:hello@interiormagnus.com?subject=${encodeURIComponent(subject)}&body=${body}`
   window.location.href = mailToLink
 }
   return (

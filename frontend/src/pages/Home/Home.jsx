@@ -27,7 +27,7 @@ export default function Home() {
     <main className="relative">
       {isMinWidth500 ? (
         <div className="fixed right-0 bottom-0 w-fit h-fit z-10 flex flex-col">
-          <a href="https://wa.me/+916397213673?text=Hello%20there" target="_blank">
+          <a href="https://wa.me/+919910888045?text=Hello%20there" target="_blank">
           <img src={whatsappIcon} alt="whatsapp-icon" className="h-24" />
           </a>
           <img src={phoneIcon} alt="phone-icon" className="h-24" />
@@ -39,7 +39,7 @@ export default function Home() {
               isOpen ? "h-auto " : "h-0"
             } transition-transform duration-300 ease-linear`}
           >
-            <a href="https://wa.me/+916397213673?text=Hello%20there" target="_blank">
+            <a href="https://wa.me/+919910888045?text=Hello%20there" target="_blank">
             <img
               src={whatsappIcon}
               className={`h-20 ${

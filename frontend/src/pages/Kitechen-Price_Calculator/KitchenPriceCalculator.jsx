@@ -174,7 +174,7 @@ export default function KitchenPriceCalculator() {
       if(selections.email) body+=`\nEmail : ${selections.email}`
       body+=`\nContact : ${selections.phone}`
 
-      const mailToLink = `mailto:yash.techtitudetribe@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      const mailToLink = `mailto:hello@interiormagnus.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
       window.location.href = mailToLink
     }
   };
