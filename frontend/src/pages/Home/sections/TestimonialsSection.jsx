@@ -14,21 +14,21 @@ export default function TestimonialsSection() {
   const testimonials = [
     {
       image: testimonial1,
-      text: "Working with Interior Magnus was an absolute pleasure from start to finish. Their team not only took the time to truly understand our ideas, but they also brought a level of creativity and expertise that transformed our vision into something beyond what we could have ever imagined. Throughout the process, they provided thoughtful suggestions and elegant design solutions that made our home feel both luxurious and welcoming. Every detail was carefully considered, and their commitment to quality was evident in every aspect of the project. Thanks to interior Magnus, our space now perfectly reflects our style and feels like a place we love to call home.",
+      text: "Working with Interior Magnus was a pleasure. They understood our ideas and added creativity and expertise, transforming our vision into something beyond expectations. Their thoughtful suggestions and elegant solutions made our home feel luxurious and welcoming. Every detail was carefully considered, reflecting our style and creating a space we truly love.",
       author: "Pradyot and Shalini",
       authorImage:testimonial1author,
       property : "Elte Hamz, Sec 77, Noite"
     },
     {
       image: testimonial2,
-      text: "Choosing Interior Magnus was the best decision we made for our renovation. Their team was attentive, thoughtful, and truly invested in bringing our vision to life. From the initial consultation to the final touches, they provided guidance and suggestions that elevated our ideas in ways we hadn't considered. The attention to detail, craftsmanship, and quality they brought to our space left us thrilled with the outcome. Now, our home feels like an elegant, comfortable sanctuary that perfectly captures our style. We couldn't be happier with the results!",
+      text: "Choosing Interior Magnus for our renovation was the best decision. Their attentive team brought our vision to life with thoughtful guidance and suggestions that elevated our ideas. The attention to detail, craftsmanship, and quality exceeded expectations. Our home now feels like an elegant, comfortable sanctuary, perfectly capturing our style. We’re thrilled with the results!",
       author: "Shyam Singh",
       authorImage:testimonial2author,
       property : "CRC Suolens, Noda Extension"
     },
     {
       image: testimonial3,
-      text: "Interior Magnus turned our dream home into a reality. They listened to our preferences and crafted designs that perfectly reflected our tastes while introducing unique elements that made the space truly stand out. Their process was smooth and professional, with every detail carefully thought out and executed flawlessly. The team was responsive, creative, and dedicated to ensuring our satisfaction at every step. Thanks to their expertise, we now live in a space that feels luxurious, comfortable, and completely us. We highly recommend Interior Magnus!",
+      text: "Interior Magnus transformed our dream home into reality. They listened to our preferences and created designs that reflected our tastes while adding unique elements. The process was smooth, professional, and detail-oriented. The team was creative, responsive, and dedicated to our satisfaction. Thanks to their expertise, our home feels luxurious, comfortable, and truly ours. Highly recommend!",
       author: "Dinesh & Shruti",
       authorImage:testimonial3author,
       property : "ATS e Tretto"
@@ -169,7 +169,7 @@ export default function TestimonialsSection() {
                   </div>
 
                   <div
-                    className={`h-4/6 flex flex-col  bg-secondary text-white p-4 pt-6`}
+                    className={`h-4/6 flex flex-col gap-2 bg-secondary text-white p-4 pt-6`}
                   >
                     <p className="">{testimonial.text}</p>
                     <p className="flex items-center text-lg">
