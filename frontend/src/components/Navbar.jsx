@@ -8,7 +8,6 @@ import { Skeleton } from "@mui/material";
 import {useSelector} from 'react-redux'
 export default function Navbar() {
   const {isLoading,isError,allServices }= useSelector(store=>store.allServices)
-
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -72,10 +71,7 @@ export default function Navbar() {
           <li className="relative group flex items-center">
             <p>
               <a
-                href={`/services/${
-                  allServices[0][0] &&
-                  allServices[0][0].service.toLowerCase().split(" ").join("-")
-                }`}
+                href={ allServices[0][0] ?`/services/${allServices[0][0].service.toLowerCase().split(" ").join("-")}` :"/"}
                 className="hover:text-gray-400 h-full"
               >
                 Services
@@ -84,7 +80,7 @@ export default function Navbar() {
             <ul className="absolute left-[-350%] top-10  mt-9 hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
               {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
-                  {(isLoading ? Array.from({ length: 5 }) : column).map(
+                  {(isLoading || isError ? Array.from({ length: 5 }) : column).map(
                     (service, index) => (
                       <li
                         key={index}
@@ -111,7 +107,7 @@ export default function Navbar() {
             </ul>
           </li>
 
-          <li className="relative group flex items-center">
+          {/* <li className="relative group flex items-center">
             <a href="/#home-portfolio" className="hover:text-gray-400">
               Portfolio
             </a>
@@ -137,7 +133,7 @@ export default function Navbar() {
                 </a>
               </li>
             </ul>
-          </li>
+          </li> */}
 
           <li className="flex items-center">
             <a href="/#home-testimonials" className="hover:text-gray-400">
