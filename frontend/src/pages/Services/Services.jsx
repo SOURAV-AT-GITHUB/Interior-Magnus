@@ -182,7 +182,7 @@ const {isLoading,isError} = services
                   />
                   <div className="p-3 pb-5 flex flex-col gap-1">
                     <p className="text-lg font-medium">{item.title}</p>
-                 { item.size &&  <p className="text-lg text-slate-700">Size : {item.size}</p>}
+                 {/* { item.size &&  <p className="text-lg text-slate-700">Size : {item.size}</p>} */}
                     <div className="text-sm flex items-center justify-center gap-2 mt-3">
                       <button className="p-3 w-2/3 rounded-full bg-white text-secondary border border-secondary">
                         Book Free Consultation
