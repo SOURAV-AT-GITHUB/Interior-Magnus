@@ -20,17 +20,13 @@ servicesRouter.post("/all-categories", async (req, res) => {
       .json({ message: `Invalid request body, ${(column, service)}` });
   } else {
     try {
-      // const response = await axios.post(`${BASE_URL}/services.json`, {
-      //   column,
-      //   service,
-      // });
       const newServiceRef = database
         .ref(`${databaseBasePath}/services/all-categories`)
         .push();
       await newServiceRef.set({ column, service });
       res
         .status(201)
-        .json({ message: `${service} added to column- ${column}` });
+        .json({ message: `${service} added to column- ${column}`,data:{id:newServiceRef.key,column,service} });
     } catch (error) {
       res
         .status(500)
