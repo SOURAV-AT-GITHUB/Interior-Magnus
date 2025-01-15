@@ -14,7 +14,11 @@ const servicesRouter = express.Router();
 servicesRouter.post("/all-categories", async (req, res) => {
   const { column } = req.body;
   const { service } = req.body;
-  if ((+column !== 1 && +column !== 2 && +column !== 3) || !service) {
+  if ((+column !== 1
+     && +column !== 2
+    //  && +column !== 3
+    ) 
+     || !service) {
     res
       .status(400)
       .json({ message: `Invalid request body, ${(column, service)}` });
