@@ -5,9 +5,9 @@ import {
   ADD_A_NEW_SERVICE_REQUEST,
   ADD_A_NEW_SERVICE_SUCCESS,
   ADD_A_NEW_SERVICE_ERROR,
-  UPATE_A_SERVICE_REQUEST,
-  UPATE_A_SERVICE_SUCCESS,
-  UPATE_A_SERVICE_ERROR,
+  EDIT_A_SERVICE_REQUEST,
+  EDIT_A_SERVICE_SUCCESS,
+  EDIT_A_SERVICE_ERROR,
   DELETE_A_SERVICE_REQUEST,
   DELETE_A_SERVICE_SUCCESS,
   DELETE_A_SERVICE_ERROR,
@@ -28,6 +28,8 @@ export const allServicesReducer = (
   switch (type) {
     case GET_ALL_SERVICES_REQUEST:
     case ADD_A_NEW_SERVICE_REQUEST:
+    case EDIT_A_SERVICE_REQUEST:
+    case DELETE_A_SERVICE_REQUEST:
       return { ...state, isLoading: true, isError: null };
     case GET_ALL_SERVICES_SUCCESS:
       return { isLoading: false, isError: null, allServices: payload };
@@ -37,8 +39,24 @@ export const allServicesReducer = (
       state = { isLoading: false, isError: null, allServices: temp };
       return state;
     }
+    case EDIT_A_SERVICE_SUCCESS: {
+      let temp = state.allServices.map((innerArray) =>
+        innerArray.map((service) =>
+          service.id === payload.id
+            ? { ...payload.updatedService }
+            : { ...service }
+        )
+      );
+      return (state = { isLoading: false, isError: null, allServices: temp });
+    }
+    case DELETE_A_SERVICE_SUCCESS:{
+      let temp = state.allServices.map(innerArray=>innerArray.filter(service=>service.id!==payload))
+      return state = {isLoading:false,isError:null,allServices:temp}
+    }
     case GET_ALL_SERVICES_ERROR:
     case ADD_A_NEW_SERVICE_ERROR:
+    case EDIT_A_SERVICE_ERROR:
+    case DELETE_A_SERVICE_ERROR:
       return { ...state, isLoading: false, isError: payload };
 
     default:

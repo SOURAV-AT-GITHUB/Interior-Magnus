@@ -11,20 +11,20 @@ import {
   Skeleton,
 } from "@mui/material";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
-import axios from "axios";
-import { 
-  // useDispatch,
-   useSelector } from "react-redux";
-// import {addNewService} from '../../Store/allServices.action'
-export default function UpdateServices(props) {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  const { services, setServices } = props;
-  const { isLoading, isError, allServices } = useSelector(
-    (store) => store.allServices
-  );
-  // const dispatch = useDispatch()
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addNewService,
+  editAService,
+  deleteAService,
+} from "../../Store/allServices.action";
+export default function UpdateServices() {
+  const {
+    isLoading,
+    //  isError,
+    allServices,
+  } = useSelector((store) => store.allServices);
+  const dispatch = useDispatch();
   const [selectedService, setSelectedService] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [isOpenDeleteDialog, setOpenDeleteDialog] = useState(false);
   const openDeleteDialog = (item) => {
     setSelectedService(item);
@@ -35,28 +35,7 @@ export default function UpdateServices(props) {
     setSelectedService(null);
   };
   const confirmDelete = async (id) => {
-    setIsDeleting(true);
-    try {
-      await axios.delete(`${BACKEND_URL}/services/all-categories/${id}`);
-      setServices(
-        services.map((innerArray) => {
-          return innerArray.filter((ele) => ele.id !== id);
-        })
-      );
-      openSnackbar(
-        `${selectedService.service} deletd from column ${selectedService.column}.`,
-        "success"
-      );
-    } catch (error) {
-      console.log(error);
-      openSnackbar(
-        `Failed to delete ${selectedService.service} from column ${selectedService.column}.`,
-        "error"
-      );
-    } finally {
-      setIsDeleting(false);
-      closeDeleteDialog();
-    }
+    dispatch(deleteAService(id, openSnackbar, closeDeleteDialog));
   };
 
   const [snackbarState, setSnackbarState] = useState({
@@ -72,34 +51,15 @@ export default function UpdateServices(props) {
   };
 
   const [isAddnewDialogOpen, setAddnewDialog] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const openAddnewDialog = () => setAddnewDialog(true);
   const closeAddnewDialog = () => setAddnewDialog(false);
   const handleNewServiceSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
     const newService = {
       column: Number(event.target[0].value),
       service: event.target[1].value,
     };
-// dispatch(addNewService(newService),openSnackbar,closeAddnewDialog)
-    try {
-      await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
-      let temp = [...services];
-      temp[newService.column - 1].push(newService);
-      setServices([...temp]);
-      openSnackbar(
-        `${newService.service} added to column ${newService.column}`
-      );
-    } catch (error) {
-      console.log(error);
-      openSnackbar(
-        `Failed to ${newService.service} add to column ${newService.column}`
-      );
-    } finally {
-      setIsSubmitting(false);
-      closeAddnewDialog();
-    }
+    dispatch(addNewService(newService, openSnackbar, closeAddnewDialog));
   };
   const [isEditServiceDialogOpen, setEditServiceDialogOpen] = useState(false);
   const openEditServiceDialog = (item) => {
@@ -112,35 +72,18 @@ export default function UpdateServices(props) {
   };
   const handleEditServiceSubmit = async (event) => {
     event.preventDefault();
-    setIsSubmitting(true);
     const updatedService = {
       column: selectedService.column,
       service: selectedService.service,
     };
-    try {
-      await axios.patch(
-        `${BACKEND_URL}/services/all-categories/${selectedService.id}`,
-        updatedService
-      );
-      let temp = services.map((innerArray) => {
-        return innerArray.filter((ele) => ele.id !== selectedService.id);
-      });
-      temp[selectedService.column - 1].push(updatedService);
-      setServices([...temp]);
-      openSnackbar(
-        `Service updated as ${updatedService.service} to column ${updatedService.column}`,
-        "success"
-      );
-    } catch (error) {
-      console.log(error);
-      openSnackbar(
-        `Faild to update ${updatedService.service} to column ${updatedService.column}`,
-        "error"
-      );
-    } finally {
-      setIsSubmitting(false);
-      setEditServiceDialogOpen(false);
-    }
+    dispatch(
+      editAService(
+        selectedService.id,
+        updatedService,
+        openSnackbar,
+        closeEditServiceDialog
+      )
+    );
   };
   return (
     <div>
@@ -285,7 +228,7 @@ export default function UpdateServices(props) {
                 <option value="">Select Column Number</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
-                <option value="3">3</option>
+                {/* <option value="3">3</option> */}
               </select>
               <input
                 required
@@ -302,10 +245,10 @@ export default function UpdateServices(props) {
               />
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isLoading}
                 className="bg-secondary text-white py-1 rounded text-xl"
               >
-                {isSubmitting ? (
+                {isLoading ? (
                   <CircularProgress color="white" />
                 ) : (
                   <p className="text-2xl">Updated</p>
@@ -362,9 +305,9 @@ export default function UpdateServices(props) {
               <Button
                 onClick={() => confirmDelete(selectedService.id)}
                 color="error"
-                disabled={isDeleting}
+                disabled={isLoading}
               >
-                {isDeleting ? <CircularProgress /> : <p>Delete</p>}
+                {isLoading ? <CircularProgress /> : <p>Delete</p>}
               </Button>
             </DialogActions>
           </Fragment>
