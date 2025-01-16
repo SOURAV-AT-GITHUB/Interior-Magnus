@@ -10,8 +10,12 @@ import {
   DialogTitle,
   Snackbar,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { loginExpired } from "../../Store/auth.action";
 export default function UpdatePortfolios() {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const dispatch = useDispatch();
+  const { token } = useSelector((store) => store.auth);
   const [category, setCategory] = useState("");
   const [snackbarState, setSnackbarState] = useState({
     open: false,
@@ -26,7 +30,7 @@ export default function UpdatePortfolios() {
   const closeSnackbar = () => {
     setSnackbarState({ ...snackbarState, open: false });
   };
-  const handleSubmit = async (event) => {
+  const handleNewImageSubmit = async (event) => {
     event.preventDefault();
     setIsUploading(true);
     const formData = new FormData();
@@ -38,10 +42,23 @@ export default function UpdatePortfolios() {
           .toLowerCase()
           .split(" ")
           .join("-")}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       openSnackbar(`Image added in ${category}'s portfolio`, "success");
     } catch (error) {
+      if (error.status === 401) {
+        dispatch(
+          loginExpired({
+            message: error.response?.data.message || error.message,
+            status: error.status,
+          })
+        );
+      }
       openSnackbar(
         `Failed to add the image in ${category}'s portfolio`,
         "error"
@@ -60,7 +77,7 @@ export default function UpdatePortfolios() {
     event.preventDefault();
     setIsLoading(true);
     const category = event.target[0].value.toLowerCase().split(" ").join("-");
-    
+
     try {
       setSelectedImage({ category });
       const response = axios.get(`${BACKEND_URL}/portfolio/${category}`);
@@ -90,16 +107,26 @@ export default function UpdatePortfolios() {
     }
     setIsDeleting(true);
     try {
-
       await axios.delete(
-        `${BACKEND_URL}/portfolio/${selectedImage.category}/${selectedImage.id}`
+        `${BACKEND_URL}/portfolio/${selectedImage.category}/${selectedImage.id}`,
+        {headers:{
+          Authorization:`Bearer ${token}`
+        }}
       );
-      setPortFolio((prev)=>(prev.filter(ele=>ele.id!==selectedImage.id)))
-      setSelectedImage((prev)=>({category:prev.category}))
+      setPortFolio((prev) => prev.filter((ele) => ele.id !== selectedImage.id));
+      setSelectedImage((prev) => ({ category: prev.category }));
       openSnackbar(`Image deleted successfully`, "success");
       closeDeleteDialog();
     } catch (error) {
-      openSnackbar(`Failed to delete the image, please,try again`, "error");
+      if (error.status === 401) {
+        dispatch(
+          loginExpired({
+            message: error.response?.data.message || error.message,
+            status: error.status,
+          })
+        );
+      }
+      openSnackbar(error.response?.data.message || error.message, "error");
     } finally {
       setIsDeleting(false);
     }
@@ -111,7 +138,10 @@ export default function UpdatePortfolios() {
           <p className="px-2">Add/Edit Portfolio Images</p>
           <AddToDriveIcon fontSize="" />
         </div>
-        <form onSubmit={handleSubmit} className="w-fit m-auto grid gap-4">
+        <form
+          onSubmit={handleNewImageSubmit}
+          className="w-fit m-auto grid gap-4"
+        >
           <div>
             <select
               value={category}
@@ -171,7 +201,13 @@ export default function UpdatePortfolios() {
             className="bg-secondary text-white py-2 px-4 rounded-xl  font-medium disabled:opacity-60 disabled:cursor-progress"
             disabled={isLoading}
           >
-            {isLoading ? <CircularProgress color="white" /> : portfolio ?"Sync Portfolio": "Load Portfolio"}
+            {isLoading ? (
+              <CircularProgress color="white" />
+            ) : portfolio ? (
+              "Sync Portfolio"
+            ) : (
+              "Load Portfolio"
+            )}
           </button>
         </form>
         {portfolio && (

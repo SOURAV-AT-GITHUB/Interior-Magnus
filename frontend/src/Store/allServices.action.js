@@ -11,8 +11,10 @@ import {
   DELETE_A_SERVICE_REQUEST,
   DELETE_A_SERVICE_SUCCESS,
   DELETE_A_SERVICE_ERROR,
+  LOGIN_EXPIRED,
 } from "./actionTypes";
 import axios from "axios";
+import { loginExpired } from "./auth.action";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const allServicesRequest = () => {
   return { type: GET_ALL_SERVICES_REQUEST };
@@ -37,26 +39,26 @@ const addNewServiceError = () => {
 const editAServiceRequest = () => {
   return { type: EDIT_A_SERVICE_REQUEST };
 };
-const editAServiceSuccess =(id,updatedService)=>{
-  return {type:EDIT_A_SERVICE_SUCCESS,payload:{id,updatedService}}
-}
-const editAServiceError =(error)=>{
-  return {type:EDIT_A_SERVICE_ERROR,payload:error}
-}
+const editAServiceSuccess = (id, updatedService) => {
+  return { type: EDIT_A_SERVICE_SUCCESS, payload: { id, updatedService } };
+};
+const editAServiceError = (error) => {
+  return { type: EDIT_A_SERVICE_ERROR, payload: error };
+};
 
-const deleteAServiceRequest = ()=>{
-  return {type:DELETE_A_SERVICE_REQUEST}
-}
+const deleteAServiceRequest = () => {
+  return { type: DELETE_A_SERVICE_REQUEST };
+};
 
-const deleteAServiceSuccess=(id)=>{
-return {type:DELETE_A_SERVICE_SUCCESS,payload:id}
-}
+const deleteAServiceSuccess = (id) => {
+  return { type: DELETE_A_SERVICE_SUCCESS, payload: id };
+};
 
-const deleteAServiceError=(error)=>{
-  return {type:DELETE_A_SERVICE_ERROR,payload:error}
-}
+const deleteAServiceError = (error) => {
+  return { type: DELETE_A_SERVICE_ERROR, payload: error };
+};
 
- const getAllServices = () => {
+const getAllServices = () => {
   return async (dispatch) => {
     dispatch(allServicesRequest());
     try {
@@ -70,17 +72,29 @@ const deleteAServiceError=(error)=>{
   };
 };
 
- const addNewService = (newService, openSnackbar, closeAddnewDialog) => {
+const addNewService = (token, newService, openSnackbar, closeAddnewDialog) => {
   return async (dispatch) => {
     dispatch(addNewServiceRequest());
     try {
-    const response =   await axios.post(`${BACKEND_URL}/services/all-categories`, newService);
-      dispatch(addNewServiceSuccess(response.data.data));
-      openSnackbar(
-        response.data.message,
-        "success"
+      const response = await axios.post(
+        `${BACKEND_URL}/services/all-categories`,
+        newService,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+      dispatch(addNewServiceSuccess(response.data.data));
+      openSnackbar(response.data.message, "success");
     } catch (error) {
+      if (error.status === 401)
+        dispatch(
+          loginExpired({
+            message: error.response?.data.message || error.message,
+            status: error.status,
+          })
+        );
       dispatch(addNewServiceError(error.response?.message || error.messagge));
       openSnackbar(
         `Failed to ${newService.service} add to column ${newService.column}`,
@@ -92,7 +106,8 @@ const deleteAServiceError=(error)=>{
   };
 };
 
- const editAService = (
+const editAService = (
+  token,
   id,
   updatedService,
   openSnackbar,
@@ -101,34 +116,64 @@ const deleteAServiceError=(error)=>{
   return async (dispatch) => {
     dispatch(editAServiceRequest());
     try {
-     const response = await axios.patch(
+      const response = await axios.patch(
         `${BACKEND_URL}/services/all-categories/${id}`,
-        updatedService
+        updatedService,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      dispatch(editAServiceSuccess(id,updatedService))
-      openSnackbar(response.data.message,"success");
+      dispatch(editAServiceSuccess(id, updatedService));
+      openSnackbar(response.data.message, "success");
     } catch (error) {
-      dispatch(editAServiceError)
-      openSnackbar(error.response?.message||error.message,'error')
-    }finally{
-      closeEditServiceDialog()
+      if (error.status === 401) {
+        dispatch(
+          loginExpired({
+            message: error.response?.data.message || error.message,
+            status: error.status,
+          })
+        );
+      }
+      dispatch(editAServiceError());
+      openSnackbar(error.response?.message || error.message, "error");
+    } finally {
+      closeEditServiceDialog();
     }
   };
 };
 
- const deleteAService = (id,openSnackbar,closeDeleteDialog)=>{
-  return async (dispatch)=>{
-    dispatch(deleteAServiceRequest())
+const deleteAService = (token, id, openSnackbar, closeDeleteDialog) => {
+  return async (dispatch) => {
+    dispatch(deleteAServiceRequest());
     try {
-      const response = await axios.delete(`${BACKEND_URL}/services/all-categories/${id}`)
-      dispatch(deleteAServiceSuccess(id))
-      openSnackbar(response.data.message,'success')
+      const response = await axios.delete(
+        `${BACKEND_URL}/services/all-categories/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(deleteAServiceSuccess(id));
+      openSnackbar(response.data.message, "success");
     } catch (error) {
-      dispatch(deleteAServiceError(error.response?.data.message || error.message))
-      openSnackbar(error.response?.message||error.message,'error')
-    }finally{
-      closeDeleteDialog()
+      if (error.status === 401) {
+        dispatch(
+          loginExpired({
+            message: error.response?.data.message || error.message,
+            status: error.status,
+          })
+        );
+      }
+      dispatch(
+        deleteAServiceError(error.response?.data.message || error.message)
+      );
+      openSnackbar(error.response?.data.message || error.message, "error");
+    } finally {
+      closeDeleteDialog();
     }
-  }
-}
-export {getAllServices,addNewService,editAService,deleteAService}
+  };
+};
+export { getAllServices, addNewService, editAService, deleteAService };

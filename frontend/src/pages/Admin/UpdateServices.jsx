@@ -23,6 +23,7 @@ export default function UpdateServices() {
     //  isError,
     allServices,
   } = useSelector((store) => store.allServices);
+  const {token} = useSelector(store=>store.auth)
   const dispatch = useDispatch();
   const [selectedService, setSelectedService] = useState(null);
   const [isOpenDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -35,7 +36,7 @@ export default function UpdateServices() {
     setSelectedService(null);
   };
   const confirmDelete = async (id) => {
-    dispatch(deleteAService(id, openSnackbar, closeDeleteDialog));
+    dispatch(deleteAService(token,id, openSnackbar, closeDeleteDialog));
   };
 
   const [snackbarState, setSnackbarState] = useState({
@@ -59,7 +60,7 @@ export default function UpdateServices() {
       column: Number(event.target[0].value),
       service: event.target[1].value,
     };
-    dispatch(addNewService(newService, openSnackbar, closeAddnewDialog));
+    dispatch(addNewService(token,newService, openSnackbar, closeAddnewDialog));
   };
   const [isEditServiceDialogOpen, setEditServiceDialogOpen] = useState(false);
   const openEditServiceDialog = (item) => {
@@ -78,6 +79,7 @@ export default function UpdateServices() {
     };
     dispatch(
       editAService(
+        token,
         selectedService.id,
         updatedService,
         openSnackbar,

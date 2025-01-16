@@ -1,18 +1,20 @@
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
-import { useSelector } from "react-redux";
-import { Alert, CircularProgress, Dialog, Snackbar } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, CircularProgress, Dialog, DialogContent, DialogTitle, Snackbar } from "@mui/material";
 import { useState } from "react";
-import axios from 'axios'
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+import axios from "axios";
+import { loginExpired } from "../../Store/auth.action";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function UpdateServiceImages() {
+  const dispatch = useDispatch()
   const services = useSelector((store) => store.allServices);
-
   const allServices = services.allServices.flat();
+  const {token} = useSelector(store=>store.auth)
+  const [data, setData] = useState([]);
   const [addNewServiceImageFrom, setAddNewServiceImageForm] = useState({
     image: null,
     title: "",
     size: "",
-    category: "",
     isOpen: false,
   });
   const openAddNewServiceImageDialog = () => {
@@ -32,80 +34,144 @@ export default function UpdateServiceImages() {
   const closeSnackbar = () => {
     setSnackbarState({ ...snackbarState, open: false });
   };
-  const  [isSubmitting,setIsSubmitting] =useState(false)
-  const handleNewServiceImageSubmit =async (event)=>{
-    event.preventDefault()
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const handleNewServiceImageSubmit = async (event) => {
+    event.preventDefault();
     try {
-      setIsSubmitting(true)
-      const {image,title,size,category} = addNewServiceImageFrom
-      const newServiceImageFormData = new FormData()
-      newServiceImageFormData.append('file',image)
-      newServiceImageFormData.append('title',title)
-      if(size) newServiceImageFormData.append("size",size)
-      
-     const response = await axios.post(`${BACKEND_URL}/services/categories/${category}`,newServiceImageFormData)
-     openSnackbar(response.data.message,'success')
+      setIsSubmitting(true);
+      const { image, title, size } = addNewServiceImageFrom;
+      const category = event.target[0].value
+      const newServiceImageFormData = new FormData();
+      newServiceImageFormData.append("file", image);
+      newServiceImageFormData.append("title", title);
+      if (size) newServiceImageFormData.append("size", size);
 
+      const response = await axios.post(
+        `${BACKEND_URL}/services/categories/${category}`,
+        newServiceImageFormData,
+        {headers:{
+          Authorization:`Bearer ${token}`
+        }}
+      );
+      openSnackbar(response.data.message, "success");
+      setData(prev=>([...prev,response.data.data]))
+      setAddNewServiceImageForm(prev=>({...prev,isOpen:false,title:""}))
     } catch (error) {
-      console.log(error)
+      if(error.status === 401) {
+        dispatch(loginExpired({message:error.response?.data.message || error.message,status:error.status}))
+      }
+      openSnackbar(error.response?.data.message || error.message,"error")
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+
+  const [isLoading, setIsLoading] = useState(false);
+  const loadData = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    const category = event.target[0].value;
+    setSelectedImage(prev=>({...prev,category}))
+    try {
+      const response = await axios.get(
+        `${BACKEND_URL}/services/categories/${category}`
+      );
+      setData(response.data.data.images);
+    } catch (error) {
+      openSnackbar(error.response?.data.message || error.message, "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const [selectedImage, setSelectedImage] = useState({
+    isOpen: false,
+    id: "",
+    category: "",
+    title: "",
+    image: "",
+    size: null,
+  });
+  const openImageModificationDialog = (item) => {
+    setSelectedImage((prev) => ({ ...prev, ...item, isOpen: true }));
+  };
+  const closeImageModificationDialog = () => {
+    setSelectedImage((prev) => ({ ...prev, isOpen: false }));
+  };
+  const handleImageDelete = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/services/categories/${selectedImage.category}/${selectedImage.id}`,
+        {
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
+      );
+      openSnackbar(response.data.message, "success");
+      setData((prev)=>prev.filter(item=>item.id!==selectedImage.id))
+      setSelectedImage(prev=>({...prev,isOpen:false}))
+    } catch (error) {
+      if(error.status === 401) {
+        dispatch(loginExpired({message:error.response?.data.message || error.message,status:error.status}))
+      }
+      openSnackbar(error.response?.data.message ||error.message, "error");
     }finally{
       setIsSubmitting(false)
     }
-  }
-const [data,setData] = useState([])
-console.log(data)
-const loadData = async (event)=>{
-  event.preventDefault()
-  const category = event.target[0].value
-  console.log(category)
-  try {
-    const response = await axios.get(`${BACKEND_URL}/services/categories/${category}`)
-    setData(response.data.data.images)
-  } catch (error) {
-    console.log(error)
-  }
-}
+  };
   return (
     <main className="p-8">
-
       <section>
         <div className=" w-fit m-auto flex gap-2 items-center text-4xl font-medium  mb-5">
           <p className="px-2">Add/Edit Service Images</p>
           <AddToDriveIcon />
         </div>
         <div className="m-auto w-fit">
-          <button onClick={openAddNewServiceImageDialog} className=" bg-secondary text-white text-lg rounded-lg p-2">Add New Service Image </button>
+          <button
+            onClick={openAddNewServiceImageDialog}
+            className=" bg-secondary text-white text-lg rounded-lg p-2"
+          >
+            Add New Service Image{" "}
+          </button>
         </div>
         <Dialog
           open={addNewServiceImageFrom.isOpen}
           onClose={closeAddNewServiceImageDialog}
         >
           <form
-             onSubmit={handleNewServiceImageSubmit}
+            onSubmit={handleNewServiceImageSubmit}
             className="w-fit m-auto grid gap-4 p-5"
           >
             <div>
               <select
-                  value={addNewServiceImageFrom.category}
-                  onChange={(e) => setAddNewServiceImageForm(prev=>({...prev,category:e.target.value}))}
+                value={'bedroom-designs'}
+                // onChange={(e) =>
+                //   setAddNewServiceImageForm((prev) => ({
+                //     ...prev,
+                //     category: e.target.value,
+                //   }))
+                // }
                 className="border w-full  min-w-[200px]  p-2 bg-primary text-white rounded-xl  text-center"
                 required
-                disabled={services.isLoading} 
+                disabled={services.isLoading}
               >
-                {(services.isLoading ? Array.from({ length: 1 }) : allServices).map(
-                  (item, index) => (
-                    <option
-                      value={
-                        item
-                          ? item.service.toLowerCase().split(" ").join("-")
-                          : ""
-                      }
-                      key={index}
-                    >
-                      {item ? item.service : "Loading..."}
-                    </option>
-                  )
-                )}
+                {(services.isLoading
+                  ? Array.from({ length: 1 })
+                  : allServices
+                ).map((item, index) => (
+                  <option
+                    value={
+                      item
+                        ? item.service.toLowerCase().split(" ").join("-")
+                        : ""
+                    }
+                    key={index}
+                  >
+                    {item ? item.service : "Loading..."}
+                  </option>
+                ))}
               </select>
             </div>
             <input
@@ -113,79 +179,164 @@ const loadData = async (event)=>{
               type="file"
               accept=".jpg, .jpeg, .png, .jfif, .avif, .webp"
               required
-              onChange={(e)=>setAddNewServiceImageForm(prev=>({...prev,image:e.target.files[0]}))}
+              onChange={(e) =>
+                setAddNewServiceImageForm((prev) => ({
+                  ...prev,
+                  image: e.target.files[0],
+                }))
+              }
             />
-            <input required type="text" placeholder="Enter Title" value={addNewServiceImageFrom.title} onChange={(e)=>setAddNewServiceImageForm(prev=>({...prev,title:e.target.value}))}/>
-            <input type="text" placeholder="Enter Size" value={addNewServiceImageFrom.size} onChange={(e)=>setAddNewServiceImageForm(prev=>({...prev,size:e.target.value}))}/>
+            <input
+              required
+              type="text"
+              placeholder="Enter Title"
+              value={addNewServiceImageFrom.title}
+              onChange={(e) =>
+                setAddNewServiceImageForm((prev) => ({
+                  ...prev,
+                  title: e.target.value,
+                }))
+              }
+            />
+            <input
+              type="text"
+              placeholder="Enter Size"
+              value={addNewServiceImageFrom.size}
+              onChange={(e) =>
+                setAddNewServiceImageForm((prev) => ({
+                  ...prev,
+                  size: e.target.value,
+                }))
+              }
+            />
             <button
               type="submit"
               className="bg-secondary text-white py-2 px-4 rounded-xl text-lg font-medium disabled:opacity-60 disabled:cursor-progress"
               disabled={isSubmitting}
             >
-              {isSubmitting ? <CircularProgress color="white" /> : `Upload Image`}
+              {isSubmitting ? (
+                <CircularProgress color="white" />
+              ) : (
+                `Upload Image`
+              )}
             </button>
           </form>
         </Dialog>
       </section>
 
-
       <section className="mt-10">
         <form onSubmit={loadData} className="flex gap-2 w-fit m-auto">
-              <select
-                  // value={addNewServiceImageFrom.category}
-                  // onChange={(e) => setAddNewServiceImageForm(prev=>({...prev,category:e.target.value}))}
-                className="border w-full  min-w-[200px]  p-2 bg-primary text-white rounded-xl  text-center"
-                required
-                disabled={services.isLoading} 
-              >
-                {(services.isLoading ? Array.from({ length: 1 }) : allServices).map(
-                  (item, index) => (
-                    <option
-                      value={
-                        item
-                          ? item.service.toLowerCase().split(" ").join("-")
-                          : ""
-                      }
-                      key={index}
-                    >
-                      {item ? item.service : "Loading..."}
-                    </option>
-                  )
-                )}
-              </select>
-              <button type="submit" className="text-nowrap bg-secondary text-white rounded-lg text-lg p-2">Load Images</button>
+          <select
+            // value={selectedImage.category}
+            // onChange={(e) =>
+            //   setSelectedImage((prev) => ({
+            //     ...prev,
+            //     category: e.target.value,
+            //   }))
+            // }
+            className="border w-full  min-w-[200px]  p-2 bg-primary text-white rounded-xl  text-center"
+            required
+            disabled={services.isLoading}
+          >
+            {(services.isLoading ? Array.from({ length: 1 }) : allServices).map(
+              (item, index) => (
+                <option
+                  value={
+                    item ? item.service.toLowerCase().split(" ").join("-") : ""
+                  }
+                  key={index}
+                >
+                  {item ? item.service : "Loading..."}
+                </option>
+              )
+            )}
+          </select>
+          <button
+            type="submit"
+            className="text-nowrap bg-secondary text-white rounded-lg text-lg p-2"
+          >
+            Load Images
+          </button>
         </form>
-        <div className=" mt-5 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {data[0] && data.map((item,index)=>(
-                  <div key={index} className="border shadow-2xl ">
-                    <img src={item.image} alt={item.title} className="h-3/4 w-full object-cover object-center"/>
-                    <div className="p-2 flex flex-col justify-between">
+        {isLoading ? (
+          <div className="flex justify-center items-center gap-4 m-8">
+            <p className="text-3xl">Loading...</p>
+            <CircularProgress size={"3rem"} />
+          </div>
+        ) : (
+          <div className=" mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data[0] &&
+              data.map((item, index) => (
+                <div key={index} className="border shadow-2xl flex flex-col gap-2 min-h-[350px] lg:max-h-[500px]">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="h-3/5 w-full object-cover object-center"
+                  />
+                  <div className="p-2 grid gap-2 h-2/5">
                     <p>{item.title}</p>
-                    {item.size && <p>{item.size}</p>}
-                    <div className="flex justify-center gap-5">
-                      <button className="w-2/4 text-white bg-secondary py-2 rounded-lg text-lg">Edit</button>
-                      <button className="w-2/4 text-white bg-primary py-2 rounded-lg text-lg">Delete</button>
-                    </div>
+                    {/* {item.size && <p>{item.size}</p>} */}
+                    <div className="flex justify-center gap-5 mb-2">
+                      <button className="w-2/4 h-fit text-white bg-secondary rounded-lg text-lg">
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => openImageModificationDialog(item)}
+                        className="w-2/4 h-fit text-white bg-primary  rounded-lg text-lg"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
-                ))}
-        </div>
+                </div>
+              ))}
+          </div>
+        )}
       </section>
-
-      <Snackbar
-              open={snackbarState.open}
-              autoHideDuration={4000}
-              onClose={closeSnackbar}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      <Dialog
+        open={selectedImage.isOpen}
+        onClose={closeImageModificationDialog}
+      >
+        <DialogTitle className="text-red-400">Delete {selectedImage.title}?</DialogTitle>
+        <DialogContent>
+        <div className="">
+          <img src={selectedImage.image} alt={selectedImage.title} className="m-auto max-h-[400px]"/>
+          {/* <p className="my-2 text-slate-600">{selectedImage.title}</p> */}
+          <div className="flex justify-end gap-2 mt-4">
+            <button
+              onClick={closeImageModificationDialog}
+              disabled={isSubmitting}
+              className="py-2 px-4 text-secondary border-2 border-secondary font-medium"
             >
-              <Alert
-                onClose={closeSnackbar}
-                severity={snackbarState.severity}
-                sx={{ width: "100%" }}
-              >
-                {snackbarState.message}
-              </Alert>
-            </Snackbar>
+              Cancel
+            </button>
+            <button
+              onClick={handleImageDelete}
+              disabled={isSubmitting}
+              className="py-2 px-4 bg-secondary text-white font-medium"
+            >
+              {isSubmitting ? <CircularProgress/> : <p>Delete</p>}
+              
+            </button>
+          </div>
+        </div>
+
+        </DialogContent>
+      </Dialog>
+      <Snackbar
+        open={snackbarState.open}
+        autoHideDuration={4000}
+        onClose={closeSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={closeSnackbar}
+          severity={snackbarState.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarState.message}
+        </Alert>
+      </Snackbar>
     </main>
   );
 }

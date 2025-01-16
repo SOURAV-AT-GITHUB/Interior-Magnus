@@ -12,6 +12,7 @@ import UpdateServices from "./pages/Admin/UpdateServices";
 import Services from "./pages/Services/Services";
 import { useDispatch } from "react-redux";
 import UpdateServiceImages from "./pages/Admin/UpdateServiceImages";
+import Login from "./pages/Admin/Login";
 function App() {
   const dispatch = useDispatch();
   const [activeRoute, setActiveRoute] = useState("/");
@@ -43,6 +44,7 @@ function App() {
           path="/kitchen-price-calculator"
           element={<KitchenPriceCalculator />}
         />
+        <Route path="/admin-login" element={<Login/>}/>
         <Route path="/admin" element={<AdminPanel />}>
           <Route path="update-portfolios" element={<UpdatePortfolios />} />
           <Route path="update-services" element={<UpdateServices />} />

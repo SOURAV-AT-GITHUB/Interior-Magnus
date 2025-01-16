@@ -1,13 +1,19 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import DesignServicesIcon from "@mui/icons-material/DesignServices";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 export default function AdminPanel() {
   const location = useLocation();
 useEffect(()=>{
 window.scrollTo(0,0)
 },[location])
+const { token } = useSelector((store) => store.auth);
+const navigate = useNavigate()
+useEffect(()=>{
+if(!token) navigate('/admin-login')
+},[token])
   return (
     <div className="pt-16  sm:pt-40 pb-10">
       {location.pathname.split("/")[2] ? (
