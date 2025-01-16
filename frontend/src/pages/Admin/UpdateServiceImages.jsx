@@ -146,7 +146,7 @@ export default function UpdateServiceImages() {
           >
             <div>
               <select
-                value={'bedroom-designs'}
+                // value={'bedroom-designs'}
                 // onChange={(e) =>
                 //   setAddNewServiceImageForm((prev) => ({
                 //     ...prev,
