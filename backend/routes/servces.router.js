@@ -8,10 +8,11 @@ const {
 } = require("../config/firebase.config");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
+const verifyToken = require('../middlewares/verifyToken')
 
 const servicesRouter = express.Router();
 
-servicesRouter.post("/all-categories", async (req, res) => {
+servicesRouter.post("/all-categories",verifyToken, async (req, res) => {
   const { column } = req.body;
   const { service } = req.body;
   if ((+column !== 1
@@ -69,7 +70,7 @@ servicesRouter.get("/all-categories", async (req, res) => {
       .json({ message: "Internal server error, please try again!!" });
   }
 });
-servicesRouter.patch("/all-categories/:id", async (req, res) => {
+servicesRouter.patch("/all-categories/:id",verifyToken, async (req, res) => {
   const { id } = req.params;
   const { column, service } = req.body;
   if (typeof column !== "number" && typeof service !== "string") {
@@ -88,7 +89,7 @@ servicesRouter.patch("/all-categories/:id", async (req, res) => {
     }
   }
 });
-servicesRouter.delete("/all-categories/:id", async (req, res) => {
+servicesRouter.delete("/all-categories/:id",verifyToken, async (req, res) => {
   const { id } = req.params;
   try {
     await database
@@ -99,7 +100,7 @@ servicesRouter.delete("/all-categories/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to delete" });
   }
 });
-
+//_____________Services Images____________
 servicesRouter.get("/categories/:category", async (req, res) => {
   try {
     const { category } = req.params;
@@ -132,7 +133,7 @@ servicesRouter.get("/categories/:category", async (req, res) => {
   }
 });
 
-servicesRouter.post("/categories/:category",upload.single("file"),
+servicesRouter.post("/categories/:category",verifyToken,upload.single("file"),
   async (req, res) => {
     const { category } = req.params;
     const file = req.file;
@@ -163,7 +164,8 @@ servicesRouter.post("/categories/:category",upload.single("file"),
             .ref(`${databaseBasePath}/services/${category}/images`)
             .push();
           await imageRef.set(imageData);
-          return res.status(201).json({ message: "Image added" });
+          const snapshot = await imageRef.once('value')
+          return res.status(201).json({ message: "Image added",data:{id:snapshot.key,...snapshot.val()} });
         } catch (error) {
           return res.status(500).json({
             message:
@@ -178,4 +180,28 @@ servicesRouter.post("/categories/:category",upload.single("file"),
     }
   }
 );
+
+servicesRouter.delete("/categories/:category/:id",verifyToken,async(req,res)=>{
+  const {category,id} = req.params
+  try {
+    const dataRef = database.ref(`${databaseBasePath}/services/${category}/images/${id}`)
+    const snapshot =await dataRef.once("value")
+    if(!snapshot.exists()){
+      return res.status(404).json({message:"Data not found"})
+    }else{
+      try {
+        const {storagePath} = snapshot.val()
+        const image = storageBucket.file(storagePath)
+        await image.delete()
+        await dataRef.remove()
+        return res.json({message:"Image Deleted Successfully"})
+
+      } catch (error) {
+        res.status(500).json({message:"Failed to delete image, please try again!"})
+      }
+    }
+  } catch (error) {
+    res.status(500).json({message: "Internal Server error while finding data, please try again."})
+  }
+})
 module.exports = servicesRouter;

@@ -6,7 +6,7 @@ const multer = require("multer");
 const fs = require("fs");
 const {database,storageBucket,databaseBasePath,storageBasePath} = require('../config/firebase.config')
 const checkPortfolioCategory = require("../middlewares/checkPortfolioCategory");
-
+const verifyToken = require('../middlewares/verifyToken')
 
 const upload = multer({ storage: multer.memoryStorage() });
 portfolioRouter.get("/:category", checkPortfolioCategory, async (req, res) => {
@@ -33,6 +33,7 @@ portfolioRouter.get("/:category", checkPortfolioCategory, async (req, res) => {
 portfolioRouter.post(
   "/:category",
   checkPortfolioCategory,
+  verifyToken,
   upload.single("file"),
   async (req, res) => {
     const date = Date.now()
@@ -72,6 +73,7 @@ portfolioRouter.post(
 portfolioRouter.delete(
   "/:category/:id",
   checkPortfolioCategory,
+  verifyToken,
   async (req, res) => {
     const { category, id } = req.params;
     try {
