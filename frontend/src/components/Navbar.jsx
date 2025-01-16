@@ -77,7 +77,7 @@ export default function Navbar() {
                 Services
               </a>
             </p>
-            <ul className="absolute left-[-350%] top-10  mt-9 hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
+            <ul className="absolute left-[-350%] top-[37px] min-[868px]:top-[41px] min-[968px]:top-[45px] lg:top-12 xl:top-[4.6rem] hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
               {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
                   {(isLoading || isError ? Array.from({ length: 5 }) : column).map(
