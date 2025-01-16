@@ -55,7 +55,7 @@ export default function PortfolioSection() {
     index = 0,
     category = "end-to-end-offerings"
   ) => {
-    if (portfolioButtons[index].isActive === true) return;
+    if (portfolioButtons[index].isActive) return;
     const currentPortfolioButton = [...portfolioButtons];
     setIsLoading(true);
     setPortfolioButtons(
@@ -69,11 +69,9 @@ export default function PortfolioSection() {
       data.sort((a, b) => a.date - b.date);
       setPortfolioImages(data.map((ele) => ele.image));
       openSnackbar("Portfolio updated!!", "success");
-    } catch (error) {
-      console.log(error);
+    } catch (/* eslint-disable-line no-unused-vars */ error) {
       setPortfolioButtons([...currentPortfolioButton]);
-      openSnackbar(
-        "Failed to update portfolio, please check you network.",
+      openSnackbar( error.response?.data.message||error.message,
         "error"
       );
     } finally {

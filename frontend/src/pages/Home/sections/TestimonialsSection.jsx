@@ -17,21 +17,21 @@ export default function TestimonialsSection() {
       text: "Working with Interior Magnus was a pleasure. They understood our ideas and added creativity and expertise, transforming our vision into something beyond expectations. Their thoughtful suggestions and elegant solutions made our home feel luxurious and welcoming. Every detail was carefully considered, reflecting our style and creating a space we truly love.",
       author: "Pradyot and Shalini",
       authorImage:testimonial1author,
-      property : "Elte Hamz, Sec 77, Noite"
+      property : "Elite Homz , Sector 77, Noida"
     },
     {
       image: testimonial2,
       text: "Choosing Interior Magnus for our renovation was the best decision. Their attentive team brought our vision to life with thoughtful guidance and suggestions that elevated our ideas. The attention to detail, craftsmanship, and quality exceeded expectations. Our home now feels like an elegant, comfortable sanctuary, perfectly capturing our style. We’re thrilled with the results!",
       author: "Shyam Singh",
       authorImage:testimonial2author,
-      property : "CRC Suolens, Noda Extension"
+      property : "CRC Sublimis , Noida Extension"
     },
     {
       image: testimonial3,
       text: "Interior Magnus transformed our dream home into reality. They listened to our preferences and created designs that reflected our tastes while adding unique elements. The process was smooth, professional, and detail-oriented. The team was creative, responsive, and dedicated to our satisfaction. Thanks to their expertise, our home feels luxurious, comfortable, and truly ours. Highly recommend!",
       author: "Dinesh & Shruti",
       authorImage:testimonial3author,
-      property : "ATS e Tretto"
+      property : "ATS Happy Trails, Noida Extension"
     },
   ];
   // const [reverse, setReverse] = useState(false);
