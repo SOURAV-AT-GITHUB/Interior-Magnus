@@ -4,7 +4,7 @@ function checkPortfolioCategory(req, res, next) {
     category !== "end-to-end-offerings" &&
     category !== "modular-kitchen" &&
     category !== "living-room" &&
-    category !== "wardrob"
+    category !== "wardrobe"
   ) {
     res.status(400).json({ message: `${category} is not a valid category` });
   } else {

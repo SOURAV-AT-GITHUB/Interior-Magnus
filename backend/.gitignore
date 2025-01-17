@@ -67,9 +67,4 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
-
-drive.learning.js
-notes.txt
-extra_learnings/
-functions/
 generateHash.js
