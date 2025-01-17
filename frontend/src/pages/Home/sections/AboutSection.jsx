@@ -42,7 +42,6 @@ export default function AboutSection() {
     return () => clearInterval(interval);
   }, [compareImageSliderPosition, direction]);
 
-  
   const [reverse, setReverse] = useState(false);
   const sliderContainerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -88,9 +87,10 @@ export default function AboutSection() {
           Welcome to <span className="font-normal">Interior Magnus,</span> where
           we believe that every space has the potential to inspire, comfort, and
           elevate daily living. As experts in interior design and consultancy.
-         <span className="max-[500px]:hidden">
-         our mission is to create spaces that reflect the unique personalities,
-          tastes, and aspirations of our clients. </span> 
+          <span className="max-[500px]:hidden">
+            our mission is to create spaces that reflect the unique
+            personalities, tastes, and aspirations of our clients.{" "}
+          </span>
         </p>
         <div className="slider-wrapper  overflow-hidden">
           <div
@@ -123,7 +123,9 @@ export default function AboutSection() {
         </div>
 
         <div className="w-fit m-auto">
-          <Button text="Get a Quote" color="primary" />
+          <a href="mailto:your-email@example.com?subject=Request%20for%20Interior%20Design%20Quote&body=Hi,%0A%0AI%27m%20interested%20in%20getting%20a%20quote%20for%20an%20interior%20design%20project.%20Please%20let%20me%20know%20what%20information%20you%20need%20from%20me%20to%20provide%20an%20estimate.%0ALooking%20forward%20to%20hearing%20from%20you%20soon!%0A%0ABest%20regards,%0A%5BYour%20Name%5D">
+            <Button text="Get a Quote" color="primary" />
+          </a>
         </div>
       </div>
       <div className=" h-full self-center lg:border  border-black lg:shadow-buttonShadow">

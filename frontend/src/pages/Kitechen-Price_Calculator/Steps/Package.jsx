@@ -19,14 +19,14 @@ export default function Package(props) {
       <div className="grid gap-4 pb-20">
         {packages.map((item, index) => (
           <div key={index} 
-          className={`grid gap-4  ${item.isSelected ? "border-red-500" : "border-transparent"}   border-[3px]  p-2 cursor-pointer sm:w-2/4 min-w-[250px] m-auto rounded-lg`}
+          className={`grid gap-4  ${item.isSelected ? "border-secondary" : "border-transparent"}   border-[3px]  p-2 cursor-pointer sm:w-2/4 min-w-[250px] m-auto rounded-lg`}
           onClick={()=>handlePackageSelect(index)}
           >
             <div className="flex gap-2">
               <div
                 className={` rounded-[50%] bg-white  ${
                   item.isSelected
-                    ? "border-[6px] border-red-500 h-[20px] w-[22px]"
+                    ? "border-[6px] border-secondary h-[20px] w-[22px]"
                     : "border-slate-700 h-[20px] w-[32px]"
                 }  border p-1`}
               ></div>

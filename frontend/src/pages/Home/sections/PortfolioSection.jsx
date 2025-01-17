@@ -20,7 +20,7 @@ export default function PortfolioSection() {
     { text: "End-to-End Offerings", isActive: false },
     { text: "Modular Kitchen", isActive: false },
     { text: "Living Room", isActive: false },
-    { text: "Wardrob", isActive: false },
+    { text: "Wardrobe", isActive: false },
   ];
   const defaultPortfolioImages = [
     portfolioImage1,

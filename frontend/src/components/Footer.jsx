@@ -44,8 +44,8 @@ export default function Footer() {
             >
               <img src={linkedinIcon} alt="linkedin-icon" className="h-4/6" />
             </a>
-            <a href="https://www.instagram.com/interiormagnus/" target="_blank" rel="noopener noreferrer">
-            <img src={instagramIcon} alt="linkedin-icon" className="h-4/6" /></a>
+            <a href="https://www.instagram.com/interiormagnus/" target="_blank" rel="noopener noreferrer" className="h-4/6 overflow-hidden p-1 border-[2.5px] rounded-full">
+            <img src={instagramIcon} alt="linkedin-icon" className="h-full   scale-75" /></a>
           </div>
         </div>
 

@@ -43,7 +43,7 @@ export default function GetQuote(props) {
         <div className="relative">
           <label
             htmlFor="name"
-            className={`absolute ${selections.name && "top-0"}  bg-white px-1`}
+            className={`absolute left-4 ${selections.name && "top-0"}  bg-white px-1`}
           >
             Name
           </label>
@@ -60,7 +60,7 @@ export default function GetQuote(props) {
         <div className="relative">
           <label
             htmlFor="email"
-            className={`absolute ${selections.email && "top-0"}  bg-white px-1`}
+            className={`absolute left-4 ${selections.email && "top-0"}  bg-white px-1`}
           >
             Email ID
           </label>
@@ -145,8 +145,8 @@ export default function GetQuote(props) {
         <div className="relative">
           <label
             htmlFor="property-name"
-            className={`absolute ${
-              selections.property && "top-0"
+            className={`absolute left-4 ${
+              selections.propertyName && "top-0"
             } z-0  bg-white px-1`}
           >
             Property Name
@@ -156,9 +156,9 @@ export default function GetQuote(props) {
             type="text"
             placeholder=""
             className="py-4"
-            value={selections.property}
+            // value={selections.propertyName}
             onInput={(e) =>
-              setSelections(prev=>({ ...prev, property: e.target.value }))
+              setSelections(prev=>({ ...prev, propertyName: e.target.value }))
             }
           />
         </div>

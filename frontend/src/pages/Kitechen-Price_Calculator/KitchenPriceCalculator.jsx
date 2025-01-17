@@ -24,6 +24,7 @@ import permiumPackageImage from "/packages/premium.png";
 import luxePackageImage from "/packages/luxe.png";
 
 import GetQuote from "./Steps/GetQuote";
+import { useNavigate } from "react-router-dom";
 
 const darkBrownColor = "#5e465b";
 
@@ -80,6 +81,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   },
 }));
 export default function KitchenPriceCalculator() {
+  const navigate = useNavigate()
   const steps = ["KITCHEN LAUOUT", "MEASUREMENTS", "PACKAGE", "GET QUOTE"];
   const [activeStep, setActiveStep] = useState(0);
   const [layouts, setLayouts] = useState([
@@ -161,7 +163,6 @@ export default function KitchenPriceCalculator() {
     phone: "",
     propertyName: "",
   });
-
   const handleNext = () => {
     if (activeStep < 3) setActiveStep((prev) => prev + 1);
     else {
@@ -181,7 +182,10 @@ export default function KitchenPriceCalculator() {
   return (
     <div>
       <nav className="fixed top-0 left-0 right-0 z-10 bg-white  p-4 sm:px-8 grid grid-cols-2 gap-5   sm:flex sm:justify-between items-center shadow-lg">
+        <a href="/">
+
         <img src={logo} alt="" className="order-1 h-12 " />
+        </a>
         <Stepper
           activeStep={activeStep}
           alternativeLabel
@@ -235,12 +239,12 @@ export default function KitchenPriceCalculator() {
             <GetQuote selections={selections} setSelections={setSelections} />
           )}
         </div>
-        <div className="fixed sm:w-[50vw] sm:min-w-[300px] bottom-0 left-0 right-0 m-auto  flex justify-between mt-4 p-4 bg-white">
+        <div className="fixed sm:w-[50vw] sm:min-w-[300px] bottom-0 left-0 right-0 m-auto  flex justify-between mt-4 p-4 bg-white shadow-inner ">
           <button
             color="error"
             className="w-24 text-secondary disabled:opacity-60 disabled:cursor-not-allowed"
-            onClick={() => setActiveStep((prev) => prev - 1)}
-            disabled={activeStep < 1}
+            onClick={() =>activeStep ===0 ? navigate("/") : setActiveStep((prev) => prev - 1)}
+            disabled={activeStep < 0}
           >
             BACK
           </button>
@@ -254,6 +258,7 @@ export default function KitchenPriceCalculator() {
               activeStep >= steps.length ||
               (activeStep === 0 && !selections.layout) ||
               (activeStep === 2 && !selections.package) ||
+              (activeStep ===3 && (!selections.name || !selections.email || !selections.propertyName)) ||
               activeStep > 3
             }
           >
