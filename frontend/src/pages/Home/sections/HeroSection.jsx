@@ -66,8 +66,8 @@ export default function HeroSection() {
                     key === 1
                       ? () => navigate("/kitchen-price-calculator")
                       : () => {
-                          return;
-                        }
+                        document.getElementById("home-contactus").scrollIntoView({behavior:"smooth"})
+                      }
                   }
                   text={`${
                     key === 0

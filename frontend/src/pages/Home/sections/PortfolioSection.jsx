@@ -15,7 +15,7 @@ import EastIcon from "@mui/icons-material/East";
 import Skeleton from "@mui/material/Skeleton";
 export default function PortfolioSection() {
   //_____________Constants__________
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  // const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const defaultPortfolioButtons = [
     { text: "End-to-End Offerings", isActive: false },
     { text: "Modular Kitchen", isActive: false },
@@ -64,12 +64,12 @@ export default function PortfolioSection() {
       )
     );
     try {
-      const response = await axios.get(`${BACKEND_URL}/portfolio/${category}`);
-      const data = response.data.data;
+      const response = await axios.get(`https://lyumonic-330af-default-rtdb.firebaseio.com/Interior_Magnus/portfolio/${category}.json`);
+      const data = Object.entries(response.data).map(([id,rest])=>({id,...rest}))
       data.sort((a, b) => a.date - b.date);
       setPortfolioImages(data.map((ele) => ele.image));
       openSnackbar("Portfolio updated!!", "success");
-    } catch (/* eslint-disable-line no-unused-vars */ error) {
+    } catch ( error) {
       setPortfolioButtons([...currentPortfolioButton]);
       openSnackbar( error.response?.data.message||error.message,
         "error"

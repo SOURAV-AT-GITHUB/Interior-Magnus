@@ -16,7 +16,7 @@ export default function OurProcessSection() {
     },
     {
       number: "03",
-      title: "Consultatio & Implementation",
+      title: "Consultation & Implementation",
       description:
         "A comprehensive project plan and timeline, with regular updates and site visits to ensure quality and adherence to the design.",
     },
@@ -63,9 +63,8 @@ export default function OurProcessSection() {
           </div>
         ))}
       </div>
-      <a href="mailto:hello@interiormagnus.com?subject=Request%20for%20Free%20Design%20Consultation&body=Hi%20there,%0A%0AI%27m%20interested%20in%20booking%20a%20free%20interior%20design%20session.%20Could%20you%20please%20let%20me%20know%20your%20availability%20and%20the%20next%20steps%20to%20schedule%20the%20session?%0ALooking%20forward%20to%20working%20with%20you%20and%20discussing%20how%20you%20can%20help%20transform%20my%20space!%0A%0ABest%20regards,%0A%5BYour%20Name%5D">
-        <Button text="Book Free Design Session" color="primary" />
-      </a>
+        <Button text="Book Free Design Session" color="primary" onClick={()=>document.getElementById("home-contactus").scrollIntoView({behavior:"smooth"})}/>
+
     </section>
   );
 }
