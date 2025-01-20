@@ -2,7 +2,7 @@ import twitterIcon from "/twitter.svg";
 import facebookIcon from "/facebook.svg";
 import linkedinIcon from "/linkedin.svg";
 import instagramIcon from "/instagram.svg";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 export default function Footer() {
   const { allServices } = useSelector((store) => store.allServices);
@@ -76,9 +76,9 @@ export default function Footer() {
           <a href="/#home-testimonials">
             <p>Testimonials</p>
           </a>
-          <NavLink to={"/admin"}>
+          {/* <NavLink to={"/admin"}>
             <p>Admin</p>
-          </NavLink>
+          </NavLink> */}
         </div>
 
         <div className="col-span-2 sm:col-span-1 text-sm sm:text-lg">
