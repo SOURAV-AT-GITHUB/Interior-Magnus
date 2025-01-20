@@ -1,9 +1,7 @@
 const express = require("express");
 const portfolioRouter = express.Router();
 
-require("dotenv").config();
 const multer = require("multer");
-const fs = require("fs");
 const {database,storageBucket,databaseBasePath,storageBasePath} = require('../config/firebase.config')
 const checkPortfolioCategory = require("../middlewares/checkPortfolioCategory");
 const verifyToken = require('../middlewares/verifyToken')

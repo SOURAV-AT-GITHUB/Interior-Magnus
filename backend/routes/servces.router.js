@@ -1,5 +1,4 @@
 const express = require("express");
-require("dotenv").config();
 const {
   database,
   databaseBasePath,
@@ -111,7 +110,7 @@ servicesRouter.get("/categories/:category", async (req, res) => {
     if (!snapshot.exists()) {
       return res
         .status(404)
-        .json({ message: `${category} is not a valid category` });
+        .json({ message: `No images are present in ${category}` });
     } else {
       const { title, description, images } = snapshot.val();
       const data = { title, description, images };
