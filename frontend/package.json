@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.28.0",
+    "react-router-hash-link": "^2.4.3",
     "react-slideshow-image": "^4.3.2",
     "react-world-flags": "^1.6.0",
     "redux": "^5.0.1",

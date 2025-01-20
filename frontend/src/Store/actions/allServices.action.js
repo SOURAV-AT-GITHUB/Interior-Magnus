@@ -11,10 +11,9 @@ import {
   DELETE_A_SERVICE_REQUEST,
   DELETE_A_SERVICE_SUCCESS,
   DELETE_A_SERVICE_ERROR,
-  LOGIN_EXPIRED,
-} from "./actionTypes";
+} from "../actionTypes";
 import axios from "axios";
-import { loginExpired } from "./auth.action";
+import { loginExpired } from "../actions/auth.action";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const allServicesRequest = () => {
   return { type: GET_ALL_SERVICES_REQUEST };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,LOGIN_EXPIRED } from "./actionTypes";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,LOGIN_EXPIRED } from "../actionTypes";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 const loginRequest = () => {
   return { type: LOGIN_REQUEST };

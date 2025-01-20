@@ -3,7 +3,7 @@ import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home/Home";
-import { getAllServices } from "./Store/allServices.action";
+import { getAllServices } from "./Store/actions/allServices.action";
 import { useEffect, useState } from "react";
 import KitchenPriceCalculator from "./pages/Kitechen-Price_Calculator/KitchenPriceCalculator";
 import AdminPanel from "./pages/Admin/AdminPanel";

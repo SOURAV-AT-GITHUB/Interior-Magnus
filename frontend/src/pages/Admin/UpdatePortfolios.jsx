@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import AddToDriveIcon from "@mui/icons-material/AddToDrive";
 import axios from "axios";
 import {
@@ -11,12 +11,23 @@ import {
   Snackbar,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { loginExpired } from "../../Store/auth.action";
+import { loginExpired } from "../../Store/actions/auth.action";
 export default function UpdatePortfolios() {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const categories = [
+    "End-to-End Offerings",
+    "Modular Kitchen",
+    "Living Room",
+    "Wardrobe",
+  ];
+  /*________Hooks and states */
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.auth);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState({
+    text: "End-to-End Offerings",
+    value: "end-to-end-offerings",
+    index: 0,
+  });
   const [snackbarState, setSnackbarState] = useState({
     open: false,
     severity: "",
@@ -24,12 +35,34 @@ export default function UpdatePortfolios() {
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [portfolio, setPortFolio] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  /*____________Pure functions_______________ */
   const openSnackbar = (message, severity) => {
     setSnackbarState({ open: true, severity, message });
   };
   const closeSnackbar = () => {
     setSnackbarState({ ...snackbarState, open: false });
   };
+  const openDeleteDialog = (item) => {
+    setSelectedImage((prev) => ({ ...prev, ...item }));
+    setDeleteDialogOpen(true);
+  };
+  const closeDeleteDialog = () => {
+    setSelectedImage((prev) => ({ category: prev.category }));
+    setDeleteDialogOpen(false);
+    setSelectedImage((prev) => ({ category: prev.category }));
+  };
+  const handleCategoryChange = (index) => {
+    setCategory({
+      text: categories[index],
+      value: categories[index].toLowerCase().split(" ").join("-"),
+      index,
+    });
+  };
+  /*____________async functions_______________ */
   const handleNewImageSubmit = async (event) => {
     event.preventDefault();
     setIsUploading(true);
@@ -37,7 +70,7 @@ export default function UpdatePortfolios() {
     const file = event.target[1].files[0];
     formData.append("file", file);
     try {
-      await axios.post(
+      const response = await axios.post(
         `${BACKEND_URL}/portfolio/${category
           .toLowerCase()
           .split(" ")
@@ -49,6 +82,9 @@ export default function UpdatePortfolios() {
           },
         }
       );
+      const temp = [...portfolio];
+      temp.push(response.data.data);
+      setPortFolio(...temp);
       openSnackbar(`Image added in ${category}'s portfolio`, "success");
     } catch (error) {
       if (error.status === 401) {
@@ -67,39 +103,27 @@ export default function UpdatePortfolios() {
       setIsUploading(false);
     }
   };
-  const [portfolio, setPortFolio] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  console.log(selectedImage);
 
-  const handleLoadImages = async (event) => {
-    event.preventDefault();
+  const handleLoadImages = async () => {
     setIsLoading(true);
-    const category = event.target[0].value.toLowerCase().split(" ").join("-");
 
     try {
       setSelectedImage({ category });
-      const response = axios.get(`${BACKEND_URL}/portfolio/${category}`);
-      setPortFolio([...(await response).data.data]);
-    } catch (error) {
+      const response = await axios.get(
+        `${BACKEND_URL}/portfolio/${category.value}`
+      );
+      setPortFolio([...response.data.data]);
+    } catch (/* eslint-disable-line no-unused-vars */error) {
+      setPortFolio([])
       openSnackbar(
-        `Failed to load ${category}'s portfolio, please try again!`,
+        `Failed to load ${category.text}'s portfolio, please try again!`,
         "error"
       );
     } finally {
       setIsLoading(false);
     }
   };
-  const openDeleteDialog = (item) => {
-    setSelectedImage((prev) => ({ ...prev, ...item }));
-    setDeleteDialogOpen(true);
-  };
-  const closeDeleteDialog = () => {
-    setSelectedImage((prev) => ({ category: prev.category }));
-    setDeleteDialogOpen(false);
-    setSelectedImage((prev) => ({ category: prev.category }));
-  };
+
   const confirmDelete = async () => {
     if (!selectedImage.storagePath) {
       alert("This is a default image, can not be deleted!!");
@@ -109,9 +133,11 @@ export default function UpdatePortfolios() {
     try {
       await axios.delete(
         `${BACKEND_URL}/portfolio/${selectedImage.category}/${selectedImage.id}`,
-        {headers:{
-          Authorization:`Bearer ${token}`
-        }}
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPortFolio((prev) => prev.filter((ele) => ele.id !== selectedImage.id));
       setSelectedImage((prev) => ({ category: prev.category }));
@@ -131,6 +157,10 @@ export default function UpdatePortfolios() {
       setIsDeleting(false);
     }
   };
+  /*_____________useEffects________________ */
+  useEffect(() => {
+    handleLoadImages();
+  }, [category]);
   return (
     <main>
       <section>
@@ -144,16 +174,17 @@ export default function UpdatePortfolios() {
         >
           <div>
             <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="border w-fit  p-2 bg-primary text-white rounded-xl  text-center"
+              className="  border w-full  p-2 bg-primary text-white rounded-xl  text-center"
               required
+              value={category.index}
+              onChange={(e) => handleCategoryChange(+e.target.value)}
             >
               <option value="">Select Image Category</option>
-              <option value="End-to-End Offerings">End-to-End Offerings</option>
-              <option value="Modular Kitchen">Modular Kitchen</option>
-              <option value="Living Room">Living Room</option>
-              <option value="Wardrob">Wardrob</option>
+              {categories.map((item, index) => (
+                <option key={item} value={index}>
+                  {item}
+                </option>
+              ))}
             </select>
           </div>
           <input
@@ -170,7 +201,7 @@ export default function UpdatePortfolios() {
             {isUploading ? (
               <CircularProgress color="white" />
             ) : (
-              `Upload Image ${category && `to ${category}`} `
+              `Upload Image to ${`${category.text}`} `
             )}
           </button>
         </form>
@@ -180,21 +211,24 @@ export default function UpdatePortfolios() {
 
       <section className="mt-10">
         <p className="text-4xl font-medium mb-4 text-center">
-          Load Portfolio Images
+          {category.text} Portfolio Images
         </p>
-        <form
+        {/* <form
           onSubmit={handleLoadImages}
           className="w-fit m-auto grid sm:flex gap-4"
         >
           <select
             className="  border w-fit  p-2 bg-primary text-white rounded-xl  text-center"
             required
+            value={category.index}
+            onChange={(e) => handleCategoryChange(+e.target.value)}
           >
             <option value="">Select Image Category</option>
-            <option value="End-to-End Offerings">End-to-End Offerings</option>
-            <option value="Modular Kitchen">Modular Kitchen</option>
-            <option value="Living Room">Living Room</option>
-            <option value="Wardrob">Wardrob</option>
+            {categories.map((item, index) => (
+              <option key={item} value={index}>
+                {item}
+              </option>
+            ))}
           </select>
           <button
             type="submit"
@@ -209,31 +243,44 @@ export default function UpdatePortfolios() {
               "Load Portfolio"
             )}
           </button>
-        </form>
-        {portfolio && (
-          <Fragment>
-            <p className="text-center text-secondary opacity-50">
-              *Hover/click on image for delete option
-            </p>
-            <div className="grid   sm:grid-cols-2  md:grid-cols-3 gap-3 p-4">
-              {portfolio.map((item, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={item.image}
-                    alt={`image-${index + 1}`}
-                    className="h-full m-auto"
-                  />
-                  <button
-                    onClick={() => openDeleteDialog(item)}
-                    className="absolute top-[50%]   left-[50%] -translate-x-[50%] -translate-y-[50%] left bg-red-500 bg-opacity-80  text-white text-2xl  p-3 px-5 rounded-md  duration-300 transition-opacity opacity-0 group-hover:opacity-100"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          </Fragment>
-        )}
+        </form> */}
+        {isLoading ? (
+          <div className="w-full flex justify-center items-center gap-4">
+            {" "}
+            <p className="text-2xl">Loading...</p>
+            <CircularProgress />
+          </div>
+        ) : portfolio[0] ?(
+           (
+            <Fragment>
+              <p className="text-center text-secondary opacity-50">
+                *Hover/click on image for delete option
+              </p>
+              <div className="grid   sm:grid-cols-2  md:grid-cols-3 gap-3 p-4">
+                {portfolio.map((item, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={item.image}
+                      alt={`image-${index + 1}`}
+                      className="h-full m-auto"
+                      loading="lazy"
+                    />
+                    <button
+                      onClick={() => openDeleteDialog(item)}
+                      className="absolute top-[50%]   left-[50%] -translate-x-[50%] -translate-y-[50%] left bg-red-500 bg-opacity-80  text-white text-2xl  p-3 px-5 rounded-md  duration-300 transition-opacity opacity-0 group-hover:opacity-100"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </Fragment>
+          )
+        )
+      :
+      <p className="text-center w-full text-2xl">No images are present in {category.text}</p>
+      }
+          
         <Dialog open={isDeleteDialogOpen} onClose={closeDeleteDialog}>
           <DialogTitle>
             <p className="text-3xl font-semibold">Delete Image</p>

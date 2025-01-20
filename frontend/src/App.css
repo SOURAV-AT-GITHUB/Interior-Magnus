@@ -96,10 +96,8 @@
 #testimonials::-webkit-scrollbar {
   display: none;
 }
-.input-container {
-  position: relative;
-}
-input {
+
+input,textarea {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -115,16 +113,19 @@ label {
   pointer-events: none;
   transition: all 0.3s ease;
 }
-input:focus {
+input:focus,textarea:focus {
   border: 2px solid var(--color-secondary);
 }
 input:focus + label,
-input:not(:placeholder-shown) + label {
+input:not(:placeholder-shown) + label,
+textarea:focus + label,
+textarea:not(:placeholder-shown) + label {
   top: 0;
   transform: translateY(-60%);
   color: var(--color-secondary);
   background-color: #fff;
 }
+
 /*Animation for about scetion and why us section, small screen only*/
 @media screen and (max-width: 768px) {
 .slider-container {

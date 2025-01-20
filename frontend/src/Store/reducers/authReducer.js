@@ -1,4 +1,4 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,LOGIN_EXPIRED } from "./actionTypes";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,LOGIN_EXPIRED } from "../actionTypes";
 
 const defaultState = {
   isLoading: false,

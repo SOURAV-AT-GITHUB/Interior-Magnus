@@ -14,7 +14,7 @@ import {
   ADD_A_NEW_SERVICE_IMAGE_REQUEST,
   ADD_A_NEW_SERVICE_IMAGE_SUCCESS,
   ADD_A_NEW_SERVICE_IMAGE_ERROR,
-} from "./actionTypes";
+} from "../actionTypes";
 
 export const defaultAllServices = {
   isLoading: false,

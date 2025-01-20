@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminLogin } from "../../Store/auth.action";
+import { adminLogin } from "../../Store/actions/auth.action";
 import { Alert, CircularProgress, Snackbar } from "@mui/material";
 
 export default function Login() {

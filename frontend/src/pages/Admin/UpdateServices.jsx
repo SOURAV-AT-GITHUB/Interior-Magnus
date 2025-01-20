@@ -16,7 +16,7 @@ import {
   addNewService,
   editAService,
   deleteAService,
-} from "../../Store/allServices.action";
+} from "../../Store/actions/allServices.action";
 export default function UpdateServices() {
   const {
     isLoading,
