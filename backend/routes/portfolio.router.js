@@ -7,27 +7,27 @@ const checkPortfolioCategory = require("../middlewares/checkPortfolioCategory");
 const verifyToken = require('../middlewares/verifyToken')
 
 const upload = multer({ storage: multer.memoryStorage() });
-portfolioRouter.get("/:category", checkPortfolioCategory, async (req, res) => {
-  const { category } = req.params;
-  try {
-    const portfolioRef = database.ref(`${databaseBasePath}/portfolio/${category}`)
-    const snapshot = await portfolioRef.once('value')
-    if(!snapshot.exists()){
-      return res.status(404).json({message:`No portfolio present in ${category} category`})
-    }
-    res.json({
-      message: "Request resolved",
-      data: [
-        ...Object.entries(snapshot.val()).map(([id, element]) => ({
-          id,
-          ...element,
-        })),
-      ],
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Error in server, please try again" });
-  }
-});
+// portfolioRouter.get("/:category", checkPortfolioCategory, async (req, res) => {
+//   const { category } = req.params;
+//   try {
+//     const portfolioRef = database.ref(`${databaseBasePath}/portfolio/${category}`)
+//     const snapshot = await portfolioRef.once('value')
+//     if(!snapshot.exists()){
+//       return res.status(404).json({message:`No portfolio present in ${category} category`})
+//     }
+//     res.json({
+//       message: "Request resolved",
+//       data: [
+//         ...Object.entries(snapshot.val()).map(([id, element]) => ({
+//           id,
+//           ...element,
+//         })),
+//       ],
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error in server, please try again" });
+//   }
+// });
 portfolioRouter.post(
   "/:category",
   checkPortfolioCategory,

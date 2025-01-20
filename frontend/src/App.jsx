@@ -13,6 +13,7 @@ import Services from "./pages/Services/Services";
 import { useDispatch } from "react-redux";
 import UpdateServiceImages from "./pages/Admin/UpdateServiceImages";
 import Login from "./pages/Admin/Login";
+import DownloadExcel from "./pages/Admin/DownloadExcel";
 function App() {
   const dispatch = useDispatch();
   const [activeRoute, setActiveRoute] = useState("/");
@@ -51,6 +52,10 @@ function App() {
           <Route
             path="update-service-images"
             element={<UpdateServiceImages />}
+          />
+          <Route
+            path="download-contact-requests"
+            element={<DownloadExcel />}
           />
         </Route>
         <Route path="/services/:service" element={<Services />} />

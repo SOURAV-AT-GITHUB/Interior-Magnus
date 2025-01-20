@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 const portfolioRouter = require("./routes/portfolio.router")
 const servicesRouter = require("./routes/servces.router")
 const authRouter = require("./routes/auth.router")
+const contactusRouter = require("./routes/contactus.router")
 const app = express();
 app.use(express.json())
 app.use(cors())
@@ -14,6 +15,7 @@ app.use(cors())
 app.use("/portfolio",portfolioRouter)
 app.use("/services",servicesRouter)
 app.use('/admin',authRouter)
+app.use('/contactus',contactusRouter)
 app.get("/", (req, res) => {
   res.json({ message: "Server working fine!!" });
 });
