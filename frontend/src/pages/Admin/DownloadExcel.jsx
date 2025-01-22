@@ -4,6 +4,7 @@ import axios from "axios";
 import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
 import * as XLSX from 'xlsx';
+import { loginExpired } from "../../Store/actions/auth.action";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export default function DownloadExcel() {
   /*____________constant values______________ */
@@ -51,6 +52,14 @@ export default function DownloadExcel() {
       XLSX.utils.book_append_sheet(wb,ws,'Sheet1')
       XLSX.writeFile(wb,`${month}-${year}-requests.xlsx`)
     } catch (error) {
+      if (error.status === 401) {
+        dispatchEvent(
+          loginExpired({
+            message: error.response?.data.message || error.message,
+            status: error.status,
+          })
+        );
+      }
       openSnackbar(error.response?.data.message || error.message, "error");
     } finally {
       setIsSubmitting(false);

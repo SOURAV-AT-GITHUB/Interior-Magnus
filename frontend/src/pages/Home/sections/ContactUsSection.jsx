@@ -11,8 +11,7 @@ import {
 } from "../../../Store/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-// import {useDispatch,useSelector} from 'react-redux'
-
+import indianFlag from "/indian-flag.png";
 export default function ContactUsSection() {
   /*____________Hooks and states_____________ */
   const [isLeft, setIsLeft] = useState(false);
@@ -26,16 +25,17 @@ export default function ContactUsSection() {
   const { first_name, last_name, email, contact_number, message } = useSelector(
     (store) => store.contactusForm
   );
+  const [numberError, setNumberError] = useState(false);
   /*______________Pure functions________________ */
   function getCurrentDate() {
     const now = new Date();
-  
+
     const date = now.getDate();
     const month = now.toLocaleString("default", { month: "long" });
     const year = now.getFullYear();
     const hours = now.getHours();
     const minutes = now.getMinutes();
-  
+
     return {
       date,
       month,
@@ -68,23 +68,34 @@ export default function ContactUsSection() {
 
   const handleSubmission = async (event) => {
     event.preventDefault();
+    if (contact_number.length < 10) {
+      setNumberError(true);
+      return;
+    }
     setIsSubmitting(true);
     const date = getCurrentDate();
     try {
       await axios.post(
-        `https://lyumonic-330af-default-rtdb.firebaseio.com/Interior_Magnus/contact_requests/${date.year}/${date.month.toLowerCase()}.json`,
+        `https://lyumonic-330af-default-rtdb.firebaseio.com/Interior_Magnus/contact_requests/${
+          date.year
+        }/${date.month.toLowerCase()}.json`,
         {
           first_name,
           last_name,
           email,
-          contact_number,
+          contact_number: `+91 ${contact_number}`,
           message,
           date: `${date.date}/${date.month}/${date.year}`,
-          time: `${String(date.hours).padStart(2,"0")}:${String(date.minutes).padStart(2,"0")}`,
+          time: `${String(date.hours).padStart(2, "0")}:${String(
+            date.minutes
+          ).padStart(2, "0")}`,
         }
       );
       dispatch({ type: CONTACTUS_FORM_CLEAR });
-      openSnackbar("Form submitted successfully, we'll get back to you soon",'success')
+      openSnackbar(
+        "Form submitted successfully, we'll get back to you soon",
+        "success"
+      );
     } catch (/* eslint-disable-line no-unused-vars */ error) {
       openSnackbar("Filed to submit form, please try again.", "error");
     } finally {
@@ -199,22 +210,42 @@ export default function ContactUsSection() {
               />
               <label htmlFor="email">E-mail</label>
             </div>
-            <div className="relative col-span-2">
-              <input
-                value={contact_number}
-                onChange={(e) =>
-                  dispatch({
-                    type: CONTACTUS_FORM_UPDATE,
-                    payload: { contact_number: e.target.value },
-                  })
-                }
-                type="number"
-                placeholder=" "
-                name="contact-number"
-                required
-              />
-              <label htmlFor="contact-number">Contact Number</label>
+            <div className="error-wrapper col-span-2">
+              <div className=" flex items-center gap-2">
+                <div className="flex items-center justify-center p-[10px] gap-1 border border-solid border-[#ccc] h-full">
+                  <img src={indianFlag} alt="" className="h-5" />
+                  <p>+91</p>
+                </div>
+
+                <div className="relative w-full">
+                  <input
+                    value={contact_number}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 10) {
+                        dispatch({
+                          type: CONTACTUS_FORM_UPDATE,
+                          payload: { contact_number: e.target.value },
+                        });
+                      }
+                      if (numberError && e.target.value.length === 10) {
+                        setNumberError(false);
+                      }
+                    }}
+                    type="number"
+                    placeholder=" "
+                    name="contact-number"
+                    required
+                  />
+                  <label htmlFor="contact-number">Contact Number</label>
+                </div>
+              </div>
+              {numberError && (
+                <p className="text-red-600 text-sm">
+                  *Please Enter a valid Number
+                </p>
+              )}
             </div>
+
             <div className="relative col-span-2">
               {/* <input  type="text" placeholder=" " name="your-message-here" className="h-20" required/> */}
               <textarea

@@ -9,7 +9,7 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import FlagIcon from "react-world-flags";
-import { pink,teal } from "@mui/material/colors";
+import { teal } from "@mui/material/colors";
 import Checkbox from "@mui/material/Checkbox";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -24,16 +24,19 @@ export default function GetQuote(props) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
 
-  const handlePhoneChange = (e) => {
-    setPhoneNumber(e.target.value);
+  const handlePhoneChange = (value) => {
+    setPhoneNumber(value);
   };
 
   const handleCountryCodeChange = (e) => {
     setCountryCode(e.target.value);
   };
-  useEffect(()=>{
-    setSelections(prev=>({...prev,phone:`${countryCode} ${phoneNumber}`}))
-  },[countryCode,phoneNumber])
+  useEffect(() => {
+    setSelections((prev) => ({
+      ...prev,
+      phone: `${countryCode} ${phoneNumber}`,
+    }));
+  }, [countryCode, phoneNumber]);
   return (
     <div className="sm:w-2/4 m-auto ">
       <h4 className="text-enter font-medium text-xl mb-3">
@@ -43,7 +46,9 @@ export default function GetQuote(props) {
         <div className="relative">
           <label
             htmlFor="name"
-            className={`absolute left-4 ${selections.name && "top-0"}  bg-white px-1`}
+            className={`absolute left-4 ${
+              selections.name && "top-0"
+            }  bg-white px-1`}
           >
             Name
           </label>
@@ -53,14 +58,18 @@ export default function GetQuote(props) {
             placeholder=""
             className="py-4"
             value={selections.name}
-            onInput={(e) => setSelections(prev=>({ ...prev, name: e.target.value }))}
+            onInput={(e) =>
+              setSelections((prev) => ({ ...prev, name: e.target.value }))
+            }
           />
         </div>
 
         <div className="relative">
           <label
             htmlFor="email"
-            className={`absolute left-4 ${selections.email && "top-0"}  bg-white px-1`}
+            className={`absolute left-4 ${
+              selections.email && "top-0"
+            }  bg-white px-1`}
           >
             Email ID
           </label>
@@ -70,7 +79,9 @@ export default function GetQuote(props) {
             placeholder=""
             className="py-4"
             value={selections.email}
-            onInput={(e) => setSelections(prev=>({ ...prev, email: e.target.value }))}
+            onInput={(e) =>
+              setSelections((prev) => ({ ...prev, email: e.target.value }))
+            }
           />
         </div>
 
@@ -80,7 +91,11 @@ export default function GetQuote(props) {
               type="number"
               placeholder="Phone Number"
               value={phoneNumber}
-              onChange={handlePhoneChange}
+              onChange={(e) => {
+                if (e.target.value.length <= 10) {
+                  handlePhoneChange(e.target.value);
+                }
+              }}
               sx={{
                 "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
                   {
@@ -158,7 +173,10 @@ export default function GetQuote(props) {
             className="py-4"
             // value={selections.propertyName}
             onInput={(e) =>
-              setSelections(prev=>({ ...prev, propertyName: e.target.value }))
+              setSelections((prev) => ({
+                ...prev,
+                propertyName: e.target.value,
+              }))
             }
           />
         </div>

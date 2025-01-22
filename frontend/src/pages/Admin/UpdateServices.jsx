@@ -35,7 +35,7 @@ export default function UpdateServices() {
     setOpenDeleteDialog(false);
     setSelectedService(null);
   };
-  const confirmDelete = async (id) => {
+  const confirmDelete = (id) => {
     dispatch(deleteAService(token,id, openSnackbar, closeDeleteDialog));
   };
 
@@ -54,7 +54,7 @@ export default function UpdateServices() {
   const [isAddnewDialogOpen, setAddnewDialog] = useState(false);
   const openAddnewDialog = () => setAddnewDialog(true);
   const closeAddnewDialog = () => setAddnewDialog(false);
-  const handleNewServiceSubmit = async (event) => {
+  const handleNewServiceSubmit = (event) => {
     event.preventDefault();
     const newService = {
       column: Number(event.target[0].value),
@@ -71,7 +71,7 @@ export default function UpdateServices() {
     setSelectedService(null);
     setEditServiceDialogOpen(false);
   };
-  const handleEditServiceSubmit = async (event) => {
+  const handleEditServiceSubmit =  (event) => {
     event.preventDefault();
     const updatedService = {
       column: selectedService.column,
