@@ -5,18 +5,22 @@ import CloseIcon from "@mui/icons-material/Close";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@mui/material";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
+import { NavHashLink } from "react-router-hash-link";
 export default function Navbar() {
-  const {isLoading,isError,allServices }= useSelector(store=>store.allServices)
+  const { isLoading, isError, allServices } = useSelector(
+    (store) => store.allServices
+  );
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
   const handleNaviagte = (id) => {
-    document
-      .getElementById(id)
-      .scrollIntoView({ behavior: "smooth", block: "start" });
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
     closeDrawer();
   };
   // Scroll event listener
@@ -37,6 +41,7 @@ export default function Navbar() {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  console.log("here");
   return (
     <nav className="relative flex justify-center h-fit">
       <div
@@ -63,15 +68,28 @@ export default function Navbar() {
 
         <ul className="hidden md:flex justify-between gap-4  lg:gap-8 ">
           <li className="flex items-center">
-            <a href="/#home-about" className="hover:text-gray-400 ">
+            <NavHashLink
+              to="/#home-about"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+              className="hover:text-gray-400 "
+            >
               About Us
-            </a>
+            </NavHashLink>
           </li>
 
           <li className="relative group flex items-center">
             <p>
               <a
-                href={ allServices[0][0] ?`/services/${allServices[0][0].service.toLowerCase().split(" ").join("-")}` :"/"}
+                href={
+                  allServices[0][0]
+                    ? `/services/${allServices[0][0].service
+                        .toLowerCase()
+                        .split(" ")
+                        .join("-")}`
+                    : "/"
+                }
                 className="hover:text-gray-400 h-full"
               >
                 Services
@@ -80,28 +98,29 @@ export default function Navbar() {
             <ul className="absolute left-[-350%] top-[37px] min-[868px]:top-[41px] min-[968px]:top-[45px] lg:top-12 xl:top-[4.6rem] hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
               {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
-                  {(isLoading || isError ? Array.from({ length: 5 }) : column).map(
-                    (service, index) => (
-                      <li
-                        key={index}
-                        className="hover:text-gray-400 m-2  min-w-32"
-                      >
-                        {service ? (
-                          <NavLink
-                            to={`/services/${service.service
-                              .toLowerCase()
-                              .split(" ")
-                              .join("-")}`}
-                            // className=""
-                          >
-                            {service.service}
-                          </NavLink>
-                        ) : (
-                          <Skeleton />
-                        )}
-                      </li>
-                    )
-                  )}
+                  {(isLoading || isError
+                    ? Array.from({ length: 5 })
+                    : column
+                  ).map((service, index) => (
+                    <li
+                      key={index}
+                      className="hover:text-gray-400 m-2  min-w-32"
+                    >
+                      {service ? (
+                        <NavLink
+                          to={`/services/${service.service
+                            .toLowerCase()
+                            .split(" ")
+                            .join("-")}`}
+                          // className=""
+                        >
+                          {service.service}
+                        </NavLink>
+                      ) : (
+                        <Skeleton />
+                      )}
+                    </li>
+                  ))}
                 </ul>
               ))}
             </ul>
@@ -136,21 +155,39 @@ export default function Navbar() {
           </li> */}
 
           <li className="flex items-center">
-            <a href="/#home-testimonials" className="hover:text-gray-400">
+            <NavHashLink
+              to="/#home-testimonials"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+              className="hover:text-gray-400"
+            >
               Testimonials
-            </a>
+            </NavHashLink>
           </li>
 
           <li className="flex items-center">
-            <a href="/#home-faq" className="hover:text-gray-400">
+            <NavHashLink
+              to="/#home-faq"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+              className="hover:text-gray-400"
+            >
               FAQ
-            </a>
+            </NavHashLink>
           </li>
 
           <li className="flex items-center">
-            <a href="/#home-contactus" className="hover:text-gray-400">
+            <NavHashLink
+              to="/#home-contactus"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+              className="hover:text-gray-400"
+            >
               Contact Us
-            </a>
+            </NavHashLink>
           </li>
         </ul>
       </div>
@@ -161,16 +198,77 @@ export default function Navbar() {
           </button>
           <img src={logo} alt="" />
           <ul className="flex flex-col gap-4 p-6">
-            <li onClick={() => handleNaviagte("home-about")}>About Us</li>
-            <li>
-              <a href="/services/modular-kitchen-designs">Services</a>
+            <li onClick={closeDrawer} className="flex items-center">
+              <NavHashLink
+                to="/#home-about"
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                About Us
+              </NavHashLink>
             </li>
-            <li onClick={() => handleNaviagte("home-portfolio")}>Portfolio</li>
-            <li onClick={() => handleNaviagte("home-testimonials")}>
-              Testimonials
+
+            <li
+              onClick={closeDrawer}
+              className="relative group flex items-center"
+            >
+              <a
+                href={
+                  allServices[0][0]
+                    ? `/services/${allServices[0][0].service
+                        .toLowerCase()
+                        .split(" ")
+                        .join("-")}`
+                    : "/"
+                }
+                className="hover:text-gray-400 h-full"
+              >
+                Services
+              </a>
             </li>
-            <li onClick={() => handleNaviagte("home-faq")}>FAQ</li>
-            <li onClick={() => handleNaviagte("home-contactus")}>Contact Us</li>
+            <li onClick={closeDrawer}>
+              <NavHashLink
+                to="/#home-portfolio"
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                Portfolio
+              </NavHashLink>
+            </li>
+            <li onClick={closeDrawer} className="flex items-center">
+              <NavHashLink
+                to="/#home-testimonials"
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                Testimonials
+              </NavHashLink>
+            </li>
+
+            <li onClick={closeDrawer} className="flex items-center">
+              <NavHashLink
+                to="/#home-faq"
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                FAQ
+              </NavHashLink>
+            </li>
+
+            <li onClick={closeDrawer} className="flex items-center">
+              <NavHashLink
+                to="/#home-contactus"
+                scroll={(el) =>
+                  el.scrollIntoView({ behavior: "smooth", block: "start" })
+                }
+              >
+                Contact Us
+              </NavHashLink>
+            </li>
           </ul>
         </div>
       </Drawer>

@@ -10,7 +10,6 @@ import {
   CONTACTUS_FORM_UPDATE,
 } from "../../Store/actionTypes";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-// import { HashLink } from 'react-router-hash-link';
 export default function Services() {
   const services = useSelector((store) => store.allServices);
   const allServices = services.allServices.flat();
