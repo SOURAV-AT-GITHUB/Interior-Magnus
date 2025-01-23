@@ -1,4 +1,4 @@
-import The7DFrameworkBG from "/The7DFramework.jfif";
+import The7DFrameworkBG from "/other-images-icons/The7DFramework.jfif";
 
 export default function The7DFrameWork() {
       const the7DFrameworkData = [

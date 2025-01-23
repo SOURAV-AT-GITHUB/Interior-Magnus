@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import portfolioImage1 from "/portfolio-image-1.jfif";
-import portfolioImage2 from "/portfolio-image-2.jfif";
-import portfolioImage3 from "/portfolio-image-3.jfif";
-import portfolioImage4 from "/portfolio-image-4.jfif";
+import portfolioImage1 from "/portfolio-images/portfolio-image-1.jfif";
+import portfolioImage2 from "/portfolio-images/portfolio-image-2.jfif";
+import portfolioImage3 from "/portfolio-images/portfolio-image-3.jfif";
+import portfolioImage4 from "/portfolio-images/portfolio-image-4.jfif";
 import {
   // CircularProgress,
   Snackbar,

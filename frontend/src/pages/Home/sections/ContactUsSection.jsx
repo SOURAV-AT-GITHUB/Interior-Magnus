@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import doorImage from "/door-image.png";
-import doorBehindImage from "/door-behind.jfif";
-import padlockHead from "/padlock-head.svg";
-import padlockBody from "/padlock-body.svg";
+import doorImage from "/contact-us-images/door-image.png";
+import doorBehindImage from "/contact-us-images/door-behind.jfif";
+import padlockHead from "/contact-us-images/padlock-head.svg";
+import padlockBody from "/contact-us-images/padlock-body.svg";
 import Button from "../../../components/Button";
 import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import {
@@ -11,7 +11,7 @@ import {
 } from "../../../Store/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import indianFlag from "/indian-flag.png";
+import indianFlag from "/contact-us-images/indian-flag.png";
 export default function ContactUsSection() {
   /*____________Hooks and states_____________ */
   const [isLeft, setIsLeft] = useState(false);

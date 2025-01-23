@@ -1,5 +1,5 @@
 import logo from "/logo.png";
-import hamburgerIcon from "/hamburger-icon.svg";
+import hamburgerIcon from "/other-images-icons/hamburger-icon.svg";
 import Drawer from "@mui/material/Drawer";
 import CloseIcon from "@mui/icons-material/Close";
 import { NavLink, useNavigate } from "react-router-dom";

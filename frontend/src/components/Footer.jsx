@@ -1,8 +1,7 @@
-import twitterIcon from "/twitter.svg";
-import facebookIcon from "/facebook.svg";
-import linkedinIcon from "/linkedin.svg";
-import instagramIcon from "/instagram.svg";
-// import { NavLink } from "react-router-dom";
+import twitterIcon from "/footer-icons/twitter.svg";
+import facebookIcon from "/footer-icons/facebook.svg";
+import linkedinIcon from "/footer-icons/linkedin.svg";
+import instagramIcon from "/footer-icons/instagram.svg";
 import { useSelector } from "react-redux";
 export default function Footer() {
   const { allServices } = useSelector((store) => store.allServices);

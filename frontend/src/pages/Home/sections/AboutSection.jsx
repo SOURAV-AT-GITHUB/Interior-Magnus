@@ -4,9 +4,9 @@ import {
   ReactCompareSlider,
   ReactCompareSliderImage,
 } from "react-compare-slider";
-import aboutImage1 from "/about-image-1.png";
-import aboutImage2 from "/about-image-2.png";
-import sliderHandle from "/sliderHandle.svg";
+import aboutImage1 from "/other-images-icons/about-image-1.png";
+import aboutImage2 from "/other-images-icons/about-image-2.png";
+import sliderHandle from "/other-images-icons/sliderHandle.svg";
 import { useEffect, useRef, useState } from "react";
 import Button from "../../../components/Button";
 
