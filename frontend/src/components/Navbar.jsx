@@ -16,13 +16,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
-  const handleNaviagte = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    closeDrawer();
-  };
+
   // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
@@ -41,7 +35,6 @@ export default function Navbar() {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  console.log("here");
   return (
     <nav className="relative flex justify-center h-fit">
       <div
