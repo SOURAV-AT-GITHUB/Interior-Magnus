@@ -1,5 +1,5 @@
-import whatsappIcon from "/whatsapp.svg";
-import phoneIcon from "/phone.svg";
+import whatsappIcon from "/other-images-icons/whatsapp.svg";
+import phoneIcon from "/other-images-icons/phone.svg";
 import HeroSection from "./sections/HeroSection";
 import AboutSection from "./sections/AboutSection";
 import PortfolioSection from "./sections/PortfolioSection";
