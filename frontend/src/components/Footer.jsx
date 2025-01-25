@@ -3,6 +3,7 @@ import facebookIcon from "/footer-icons/facebook.svg";
 import linkedinIcon from "/footer-icons/linkedin.svg";
 import instagramIcon from "/footer-icons/instagram.svg";
 import { useSelector } from "react-redux";
+import { NavHashLink } from "react-router-hash-link";
 export default function Footer() {
   const { allServices } = useSelector((store) => store.allServices);
   return (
@@ -43,59 +44,120 @@ export default function Footer() {
             >
               <img src={linkedinIcon} alt="linkedin-icon" className="h-4/6" />
             </a>
-            <a href="https://www.instagram.com/interiormagnus/" target="_blank" rel="noopener noreferrer" className="h-fit sm:h-4/6 p-[2px] sm:p-1 border-[1.6px] rounded-full">
-            <img src={instagramIcon} alt="linkedin-icon" className="max-h-[25px] sm:max-h-full  scale-75" /></a>
+            <a
+              href="https://www.instagram.com/interiormagnus/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-fit sm:h-4/6 p-[2px] sm:p-1 border-[1.6px] rounded-full"
+            >
+              <img
+                src={instagramIcon}
+                alt="linkedin-icon"
+                className="max-h-[25px] sm:max-h-full  scale-75"
+              />
+            </a>
           </div>
         </div>
 
-        <div className="col-span-2 sm:col-span-1 text-sm sm:text-lg justify-self-center">
+        <ul className="col-span-2 sm:col-span-1 text-sm sm:text-lg justify-self-center">
           <p className="mb-4 text-base  sm:text-xl text-nowrap">Company</p>
 
-          <a href="/#home-about">
-            <p>About Us</p>
-          </a>
-          <a
-            href={
-              allServices[0][0]
-                ? `/services/${allServices[0][0].service
-                    .toLowerCase()
-                    .split(" ")
-                    .join("-")}`
-                : "/"
-            }
-          >
-            <p>Services</p>
-          </a>
-          <a href="/#home-whyus">
-            <p>Why Us</p>
-          </a>
-          <a href="/#home-portfolio">
-            <p>Portfolio</p>
-          </a>
-          <a href="/#home-testimonials">
-            <p>Testimonials</p>
-          </a>
+          <li className="flex items-center">
+            <NavHashLink
+              to="/#home-about"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              About Us
+            </NavHashLink>
+          </li>
+          <li>
+            <a
+              href={
+                allServices[0][0]
+                  ? `/services/${allServices[0][0].service
+                      .toLowerCase()
+                      .split(" ")
+                      .join("-")}`
+                  : "/"
+              }
+            >
+              <p>Services</p>
+            </a>
+          </li>
+          <li>
+            <NavHashLink
+              to="/#home-whyus"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              <p>Why Us</p>
+            </NavHashLink>
+          </li>
+          <li>
+            <NavHashLink
+              to="/#home-portfolio"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              <p>Portfolio</p>
+            </NavHashLink>
+          </li>
+          <li>
+            <NavHashLink
+              to="/#home-testimonials"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              <p>Testimonials</p>
+            </NavHashLink>
+          </li>
           {/* <NavLink to={"/admin"}>
             <p>Admin</p>
           </NavLink> */}
-        </div>
+        </ul>
 
-        <div className="col-span-2 sm:col-span-1 text-sm sm:text-lg">
-          <p className="mb-4 text-base  sm:text-xl text-nowrap">
-            Customer Support
-          </p>
+        <ul className="col-span-2 sm:col-span-1 text-sm sm:text-lg">
+          <li>
+            {" "}
+            <p className="mb-4 text-base  sm:text-xl text-nowrap">
+              Customer Support
+            </p>
+          </li>
 
-          <p>Privacy Policy</p>
-          <p>Terms & Conditions</p>
-          <a href="/#home-faq">
+          <li>
             {" "}
-            <p>FAQ</p>
-          </a>
-          <a href="/#home-contactus">
-            {" "}
-            <p>Contact Us</p>
-          </a>
-        </div>
+            <p>Privacy Policy</p>
+          </li>
+          <li>
+            <p>Terms & Conditions</p>
+          </li>
+          <li className="flex items-center">
+            <NavHashLink
+              to="/#home-faq"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              FAQ
+            </NavHashLink>
+          </li>
+
+          <li className="flex items-center">
+            <NavHashLink
+              to="/#home-contactus"
+              scroll={(el) =>
+                el.scrollIntoView({ behavior: "smooth", block: "start" })
+              }
+            >
+              Contact Us
+            </NavHashLink>
+          </li>
+        </ul>
       </div>
 
       <hr className="border border-white mt-12 mb-6" />
