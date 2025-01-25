@@ -70,7 +70,6 @@ export default function PortfolioSection() {
       setPortfolioImages(data.map((ele) => ele.image));
       openSnackbar("Portfolio updated!!", "success");
     } catch ( error) {
-      console.log(error)
       setPortfolioButtons([...currentPortfolioButton]);
       openSnackbar( error.response?.data.message||error.message,
         "error"
