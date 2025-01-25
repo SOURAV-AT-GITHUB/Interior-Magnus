@@ -64,12 +64,13 @@ export default function PortfolioSection() {
       )
     );
     try {
-      const response = await axios.get(`${DATABASE_URL}/${category}.json`);
+      const response = await axios.get(`${DATABASE_URL}/portfolio/${category}.json`);
       const data = Object.entries(response.data).map(([id,rest])=>({id,...rest}))
       data.sort((a, b) => a.date - b.date);
       setPortfolioImages(data.map((ele) => ele.image));
       openSnackbar("Portfolio updated!!", "success");
     } catch ( error) {
+      console.log(error)
       setPortfolioButtons([...currentPortfolioButton]);
       openSnackbar( error.response?.data.message||error.message,
         "error"
