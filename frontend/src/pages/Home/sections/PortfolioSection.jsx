@@ -15,7 +15,7 @@ import EastIcon from "@mui/icons-material/East";
 import Skeleton from "@mui/material/Skeleton";
 export default function PortfolioSection() {
   //_____________Constants__________
-  // const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const DATABASE_URL = import.meta.env.VITE_DATABASE_URL;
   const defaultPortfolioButtons = [
     { text: "End-to-End Offerings", isActive: false },
     { text: "Modular Kitchen", isActive: false },
@@ -64,7 +64,7 @@ export default function PortfolioSection() {
       )
     );
     try {
-      const response = await axios.get(`https://lyumonic-330af-default-rtdb.firebaseio.com/Interior_Magnus/portfolio/${category}.json`);
+      const response = await axios.get(`${DATABASE_URL}/${category}.json`);
       const data = Object.entries(response.data).map(([id,rest])=>({id,...rest}))
       data.sort((a, b) => a.date - b.date);
       setPortfolioImages(data.map((ele) => ele.image));

@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginExpired } from "../../Store/actions/auth.action";
 export default function UpdatePortfolios() {
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const DATABASE_URL = import.meta.env.VITE_DATABASE_URL;
   const categories = [
     "End-to-End Offerings",
     "Modular Kitchen",
@@ -71,10 +72,7 @@ export default function UpdatePortfolios() {
     formData.append("file", file);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/portfolio/${category
-          .toLowerCase()
-          .split(" ")
-          .join("-")}`,
+        `${BACKEND_URL}/portfolio/${category.value}`,
         formData,
         {
           headers: {
@@ -82,10 +80,8 @@ export default function UpdatePortfolios() {
           },
         }
       );
-      const temp = [...portfolio];
-      temp.push(response.data.data);
-      setPortFolio(...temp);
-      openSnackbar(`Image added in ${category}'s portfolio`, "success");
+      setPortFolio(prev=>([...prev,response.data.data]));
+      openSnackbar(`Image added in ${category.text}'s portfolio`, "success");
     } catch (error) {
       if (error.status === 401) {
         dispatch(
@@ -96,7 +92,7 @@ export default function UpdatePortfolios() {
         );
       }
       openSnackbar(
-        `Failed to add the image in ${category}'s portfolio`,
+        `Failed to add the image in ${category.text}'s portfolio`,
         "error"
       );
     } finally {
@@ -110,9 +106,9 @@ export default function UpdatePortfolios() {
     try {
       setSelectedImage({ category });
       const response = await axios.get(
-        `${BACKEND_URL}/portfolio/${category.value}`
+        `${DATABASE_URL}/portfolio/${category.value}.json`
       );
-      setPortFolio([...response.data.data]);
+      setPortFolio([...Object.entries(response.data).map(([id,item])=>({id,...item}))]);
     } catch (/* eslint-disable-line no-unused-vars */error) {
       setPortFolio([])
       openSnackbar(
@@ -132,7 +128,7 @@ export default function UpdatePortfolios() {
     setIsDeleting(true);
     try {
       await axios.delete(
-        `${BACKEND_URL}/portfolio/${selectedImage.category}/${selectedImage.id}`,
+        `${BACKEND_URL}/portfolio/${selectedImage.category.value}/${selectedImage.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
