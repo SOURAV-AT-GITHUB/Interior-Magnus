@@ -2,7 +2,7 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Snackbar, Alert, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { Fragment, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as XLSX from 'xlsx';
 import { loginExpired } from "../../Store/actions/auth.action";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -24,6 +24,7 @@ export default function DownloadExcel() {
   ];
   /*____________hooks and states */
   const { token } = useSelector((store) => store.auth);
+  const dispatch = useDispatch()
   const [snackbarState, setSnackbarState] = useState({
     open: false,
     severity: "",
@@ -43,6 +44,7 @@ export default function DownloadExcel() {
     const month = event.target[0].value;
     const year = event.target[1].value;
     setIsSubmitting(true);
+    console.log(token)
     try {
       const response = await axios.get(
         `${BACKEND_URL}/contactus/${year}/${month}`,{headers:{Authorization:`Bearer ${token}`}}
@@ -52,8 +54,9 @@ export default function DownloadExcel() {
       XLSX.utils.book_append_sheet(wb,ws,'Sheet1')
       XLSX.writeFile(wb,`${month}-${year}-requests.xlsx`)
     } catch (error) {
+      console.log(error)
       if (error.status === 401) {
-        dispatchEvent(
+        dispatch(
           loginExpired({
             message: error.response?.data.message || error.message,
             status: error.status,
