@@ -16,7 +16,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
-
+const [subcategoryOpen,setSubcategoryOpen] = useState(false)
   // Scroll event listener
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +41,7 @@ export default function Navbar() {
         className={`h-auto fixed ${
           scrolled ? "w-full" : "w-full md:w-11/12 md:mt-10 md:rounded-lg"
         }  px-1  md:px-10  flex justify-between bg-white md:border border-black z-20 `}
+        
       >
         <div
           onClick={() => navigate("/")}
@@ -59,7 +60,7 @@ export default function Navbar() {
           onClick={openDrawer}
         />
 
-        <ul className="hidden md:flex justify-between gap-4  lg:gap-8 ">
+        <ul className="hidden md:flex justify-between gap-4  lg:gap-8 " onMouseLeave={()=>setSubcategoryOpen(false)}>
           <li className="flex items-center ">
             <NavHashLink
               to="/#home-about"
@@ -72,7 +73,7 @@ export default function Navbar() {
             </NavHashLink>
           </li>
 
-          <li className="relative group flex items-center  min-w-[100px] ">
+          <li className="relative group flex items-center  min-w-[100px] " onMouseEnter={()=>setSubcategoryOpen(true)}>
             <p className="text-center w-full">
               <a
                 href={
@@ -88,7 +89,7 @@ export default function Navbar() {
                 Services
               </a>
             </p>
-            <ul className="absolute left-[-150%] top-[37px] min-[868px]:top-[41px] min-[968px]:top-[45px] lg:top-12 xl:top-[4.6rem] hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
+            <ul className={`${subcategoryOpen ? "hidden md:grid" : "hidden"} grid-cols-2 justify-between gap-5 absolute left-[-150%] top-14 lg:top-16 xl:top-[4.75rem]   min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap`}>
               {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
                   {(isLoading || isError
