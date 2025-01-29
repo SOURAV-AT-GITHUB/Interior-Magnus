@@ -109,12 +109,12 @@ export default function ContactUsSection() {
   return (
     <section
       id="home-contactus"
-      className=" relative bg-white py-10 lg:pb-0 lg:pt-20 px-5 lg:px-28 flex flex-col gap-6 lg:grid grid-cols-2 grid-rows-3 overflow-hidden "
+      className=" relative bg-white py-10 lg:pb-0 lg:pt-20 px-5 lg:px-28 flex flex-col gap-6 lg:grid grid-cols-2 grid-rows-4 overflow-hidden "
     >
-      <div className="lg:order-2 grid text-center lg:text-left">
+      <div className="lg:order-2 grid gap-4 text-center lg:text-left ">
         <div className="self-center">
           <p className="text-secondary">Contact Us</p>
-          <p className="text-xl mt-3  lg:text-4xl">
+          <p className="text-xl  lg:text-4xl">
             Let&apos;s Start Your Design Journey
           </p>
         </div>
@@ -125,7 +125,7 @@ export default function ContactUsSection() {
         </p>
       </div>
 
-      <div className="lg:order-1 col-span-1 row-span-3 h-full   relative z-0 flex flex-col justify-end   overflow-hidden ">
+      <div className="lg:order-1 col-span-1 row-span-4 h-full   relative z-0 flex flex-col justify-end   overflow-hidden ">
         <img
           src={doorImage}
           alt="door-image"
@@ -157,9 +157,9 @@ export default function ContactUsSection() {
         </div>
       </div>
 
-      <div className="lg:order-3 row-span-2 lg:pb-4">
+      <div className="lg:order-3 row-span-3">
         <form onSubmit={handleSubmission}>
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-6">
             <div className="relative">
               <input
                 value={first_name}
@@ -288,6 +288,8 @@ export default function ContactUsSection() {
           </div>
         </form>
       </div>
+
+
       <Snackbar
         open={snackbarState.open}
         autoHideDuration={4000}
