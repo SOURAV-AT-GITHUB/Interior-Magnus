@@ -47,7 +47,7 @@ const [subcategoryOpen,setSubcategoryOpen] = useState(false)
           onClick={() => navigate("/")}
           className="w-2/5  md:w-1/5  bg-white text-black cursor-pointer"
         >
-          <img src={logo} alt="" className="h-full max-h-[50px] md:max-h-[80px]" />
+          <img src={logo} alt="" className="h-full" />
           {/* <p className="self-end -mt-1  md:-mt-2  text-[0.40rem] md:text-[.6rem]  text-nowrap">
             Interior | Furniture | Design
           </p> */}
