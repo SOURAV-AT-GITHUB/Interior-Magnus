@@ -151,7 +151,7 @@ export default function Services() {
     }, 200); // Small delay to allow the page to update
   };
   return (
-    <main className="min-h-screen p-2 pt-16 sm:pt-24 lg:p-4 lg:pt-28  xl:p-12 xl:pt-32 ">
+    <main className="min-h-screen p-2 pt-16 md:pt-32 lg:p-4 lg:pt-36  xl:p-12 xl:pt-40 ">
       <div className="relative">
         <button
           onClick={scrollLeft}

@@ -89,7 +89,7 @@ const [subcategoryOpen,setSubcategoryOpen] = useState(false)
                 Services
               </a>
             </p>
-            <ul className={`${subcategoryOpen ? "hidden md:grid" : "hidden"} grid-cols-2 justify-between gap-5 absolute left-[-150%] top-14 lg:top-16 xl:top-[4.75rem]   min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap`}>
+            <ul className={`${subcategoryOpen ? "hidden md:grid" : "hidden"} grid-cols-2 justify-between gap-5 absolute left-[-200%] top-14 lg:top-16 xl:top-[4.75rem]   min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap`}>
               {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
                   {(isLoading || isError
