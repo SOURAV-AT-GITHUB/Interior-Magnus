@@ -34,7 +34,7 @@ contactusRouter.get("/:year/:month", verifyToken, async (req, res) => {
 });
 contactusRouter.post("/submit-form", async (req, res) => {
   try {
-    const { first_name, last_name, email, contact_number, date, message } =
+    const { first_name, last_name, email, contact_number, date, message,project_name } =
       req.body;
     const authRef = database.ref(`${databaseBasePath}/zoho_auth`);
     const snapshot = await authRef.once("value");
@@ -61,7 +61,7 @@ contactusRouter.post("/submit-form", async (req, res) => {
       const leadData = {
         data: [
           {
-            Company: "Interior Magnus",
+            Company: project_name,
             Last_Name: last_name,
             First_Name: first_name,
             Email: email,
@@ -91,6 +91,7 @@ contactusRouter.post("/submit-form", async (req, res) => {
           time: `${String(date.hours).padStart(2, "0")}:${String(
             date.minutes
           ).padStart(2, "0")}`,
+          project_name
         });
       return res.json({
         message: "Form submitted successfully, we'll get back to you soon",

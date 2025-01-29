@@ -23,7 +23,7 @@ export default function ContactUsSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const { first_name, last_name, email, contact_number, message } = useSelector(
+  const { first_name, last_name, email, contact_number, message,project_name } = useSelector(
     (store) => store.contactusForm
   );
   const [numberError, setNumberError] = useState(false);
@@ -84,7 +84,8 @@ export default function ContactUsSection() {
           email,
           contact_number: `+91 ${contact_number}`,
           message,
-          date
+          date,
+          project_name
         }
       );
       dispatch({ type: CONTACTUS_FORM_CLEAR });
@@ -156,7 +157,7 @@ export default function ContactUsSection() {
         </div>
       </div>
 
-      <div className="lg:order-3 row-span-2">
+      <div className="lg:order-3 row-span-2 lg:pb-4">
         <form onSubmit={handleSubmission}>
           <div className="grid grid-cols-2 gap-8">
             <div className="relative">
@@ -203,6 +204,7 @@ export default function ContactUsSection() {
                 type="email"
                 placeholder=" "
                 name="email"
+                required
               />
               <label htmlFor="email">E-mail</label>
             </div>
@@ -240,6 +242,23 @@ export default function ContactUsSection() {
                   *Please Enter a valid Number
                 </p>
               )}
+            </div>
+
+            <div className="relative col-span-2">
+              <input
+                value={project_name}
+                onChange={(e) =>
+                  dispatch({
+                    type: CONTACTUS_FORM_UPDATE,
+                    payload: { project_name: e.target.value },
+                  })
+                }
+                type="text"
+                placeholder=" "
+                name="project_name"
+                required
+              />
+              <label htmlFor="project_name">Project Name</label>
             </div>
 
             <div className="relative col-span-2">

@@ -5,6 +5,7 @@ const defaultForm = {
   email: "",
   contact_number: "",
   message: "",
+  project_name:""
 };
 
 export const contactusFormReducer = (
