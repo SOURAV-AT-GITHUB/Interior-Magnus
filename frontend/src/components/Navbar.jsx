@@ -1,4 +1,4 @@
-import logo from "/logo.png";
+import logo from "/other-images-icons/logo.png";
 import hamburgerIcon from "/other-images-icons/hamburger-icon.svg";
 import Drawer from "@mui/material/Drawer";
 import CloseIcon from "@mui/icons-material/Close";

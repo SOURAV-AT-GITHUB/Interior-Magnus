@@ -7,7 +7,7 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 // import { Button } from "@mui/material";
-import logo from "/logo.png";
+import logo from "/other-images-icons/logo.png";
 import { useState } from "react";
 
 import KitchenLayout from "./Steps/KitchenLayout";

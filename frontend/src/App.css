@@ -46,7 +46,7 @@
 #home-contactus::before {
   content: "";
   position: absolute;
-  background-image: url("/why-us-bg.png");
+  background-image: url("/other-images-icons/why-us-bg.png");
   background-size: contain;
   background-repeat: no-repeat;
   z-index: 0;
