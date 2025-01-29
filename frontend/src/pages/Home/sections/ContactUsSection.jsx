@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import indianFlag from "/contact-us-images/indian-flag.png";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 export default function ContactUsSection() {
   /*____________Hooks and states_____________ */
   const [isLeft, setIsLeft] = useState(false);
@@ -76,19 +77,14 @@ export default function ContactUsSection() {
     const date = getCurrentDate();
     try {
       await axios.post(
-        `https://lyumonic-330af-default-rtdb.firebaseio.com/Interior_Magnus/contact_requests/${
-          date.year
-        }/${date.month.toLowerCase()}.json`,
+        `${BACKEND_URL}/contactus/submit-form`,
         {
           first_name,
           last_name,
           email,
           contact_number: `+91 ${contact_number}`,
           message,
-          date: `${date.date}/${date.month}/${date.year}`,
-          time: `${String(date.hours).padStart(2, "0")}:${String(
-            date.minutes
-          ).padStart(2, "0")}`,
+          date
         }
       );
       dispatch({ type: CONTACTUS_FORM_CLEAR });
@@ -97,7 +93,7 @@ export default function ContactUsSection() {
         "success"
       );
     } catch (/* eslint-disable-line no-unused-vars */ error) {
-      openSnackbar("Filed to submit form, please try again.", "error");
+      openSnackbar("Failed to submit form, please try again.", "error");
     } finally {
       setIsSubmitting(false);
     }
