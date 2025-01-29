@@ -2,15 +2,16 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { Skeleton } from "@mui/material";
+import { Alert, Skeleton, Snackbar } from "@mui/material";
 import axios from "axios";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CONTACTUS_FORM_UPDATE,
 } from "../../Store/actionTypes";
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const DATABASE_URL = import.meta.env.VITE_DATABASE_URL;
 export default function Services() {
+  /*___________Hooks and states________ */
   const services = useSelector((store) => store.allServices);
   const allServices = services.allServices.flat();
   const { isLoading, isError } = services;
@@ -22,6 +23,12 @@ export default function Services() {
   const [lineClamp, setLineClamp] = useState(true);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
+  /*_____________Pure functions____________ */
   const scrollLeft = () => {
     if (slideNavRef.current) {
       slideNavRef.current.scrollBy({
@@ -49,6 +56,22 @@ export default function Services() {
       setIsAtEnd(isAtEnd);
     }
   };
+  const openSnackbar = (message, severity) => {
+    setSnackbarState({ open: true, severity, message });
+  };
+
+  const closeSnackbar = () => {
+    setSnackbarState({ ...snackbarState, open: false });
+  };
+    // const handleMailSending = (title, size = null) => {
+  //   const subject = "Inquiry about your product";
+  //   let body = `Hello,%0D%0AI%20want%20to%20know%20more%20about%20${title}%20poduct`;
+  //   if (size) body += `%20with%20size%20${size}.`;
+  //   const mailToLink = `mailto:hello@interiormagnus.com?subject=${encodeURIComponent(
+  //     subject
+  //   )}&body=${body}`;
+  //   window.location.href = mailToLink;
+  // };
   useEffect(() => {
     const container = slideNavRef.current;
     if (container) {
@@ -60,15 +83,25 @@ export default function Services() {
       }
     };
   }, []);
+  /*______________async functions_____________ */
   const getData = async () => {
     try {
       const response = await axios.get(
-        `${BACKEND_URL}/services/categories/${service}`
+        `${DATABASE_URL}/services/${service}.json`
       );
-      setData(response.data.data);
+      if(!response.data) {
+        
+       setData(null)
+       openSnackbar(`No data present in ${service} category`,'error')
+       return 
+      }
+      const {title,description,images} = response.data
+      const structuredImages = Object.entries(images || {}).map(([id,ele])=>({...ele}))
+      structuredImages.sort((a,b)=>a.date-b.date)
+      setData({title:title||null,description:description||null,images:structuredImages || []});
     } catch (error) {
+      openSnackbar(error.message,'error')
       setData(null);
-      console.log(error);
     }
   };
   useEffect(() => {
@@ -97,15 +130,7 @@ export default function Services() {
     }
     getData();
   }, [service]);
-  // const handleMailSending = (title, size = null) => {
-  //   const subject = "Inquiry about your product";
-  //   let body = `Hello,%0D%0AI%20want%20to%20know%20more%20about%20${title}%20poduct`;
-  //   if (size) body += `%20with%20size%20${size}.`;
-  //   const mailToLink = `mailto:hello@interiormagnus.com?subject=${encodeURIComponent(
-  //     subject
-  //   )}&body=${body}`;
-  //   window.location.href = mailToLink;
-  // };
+
 
   const handleClick = (title) => {
     dispatch({
@@ -253,6 +278,20 @@ export default function Services() {
         * The products shown on the website are subject to availability. Prices
         are bound to change depending on the market conditions.
       </p>
+              <Snackbar
+                open={snackbarState.open}
+                autoHideDuration={4000}
+                onClose={closeSnackbar}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              >
+                <Alert
+                  onClose={closeSnackbar}
+                  severity={snackbarState.severity}
+                  sx={{ width: "100%" }}
+                >
+                  {snackbarState.message}
+                </Alert>
+              </Snackbar>
     </main>
   );
 }
