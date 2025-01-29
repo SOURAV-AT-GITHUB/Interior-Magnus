@@ -184,7 +184,7 @@ export default function KitchenPriceCalculator() {
       <nav className="fixed top-0 left-0 right-0 z-10 bg-white  p-4 sm:px-8 grid grid-cols-2 gap-5   sm:flex sm:justify-between items-center shadow-lg">
         <a href="/">
 
-        <img src={logo} alt="" className="order-1 h-12 " />
+        <img src={logo} alt="" className="order-1 h-full max-h-[50px] md:max-h-[75px]" />
         </a>
         <Stepper
           activeStep={activeStep}

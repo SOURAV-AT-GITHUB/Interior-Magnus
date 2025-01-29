@@ -8,7 +8,7 @@ export default {
     extend: {
       colors:{
         primary :  "#FDC546",
-        secondary : "#44AAB6"
+        secondary : "#0496BD"
       },
       boxShadow:{
         buttonShadow : "black 5px 5px"

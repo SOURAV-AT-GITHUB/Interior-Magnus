@@ -39,17 +39,17 @@ export default function Navbar() {
     <nav className="relative flex justify-center h-fit">
       <div
         className={`h-auto fixed ${
-          scrolled ? "w-full" : "md:w-11/12 md:mt-10 md:rounded-lg"
-        }  px-4  md:px-10  flex justify-between bg-white md:border border-black z-10 `}
+          scrolled ? "w-full" : "w-full md:w-11/12 md:mt-10 md:rounded-lg"
+        }  px-1  md:px-10  flex justify-between bg-white md:border border-black z-20 `}
       >
         <div
           onClick={() => navigate("/")}
-          className="w-2/5  md:w-1/5 flex flex-col bg-white text-black cursor-pointer"
+          className="w-2/5  md:w-1/5  bg-white text-black cursor-pointer"
         >
-          <img src={logo} alt="" className="h-full" />
-          <p className="self-end -mt-1  md:-mt-2  text-[0.40rem] md:text-[.6rem]  text-nowrap">
+          <img src={logo} alt="" className="h-full max-h-[50px] md:max-h-[85px]" />
+          {/* <p className="self-end -mt-1  md:-mt-2  text-[0.40rem] md:text-[.6rem]  text-nowrap">
             Interior | Furniture | Design
-          </p>
+          </p> */}
         </div>
 
         <img
@@ -60,7 +60,7 @@ export default function Navbar() {
         />
 
         <ul className="hidden md:flex justify-between gap-4  lg:gap-8 ">
-          <li className="flex items-center">
+          <li className="flex items-center ">
             <NavHashLink
               to="/#home-about"
               scroll={(el) =>
@@ -72,8 +72,8 @@ export default function Navbar() {
             </NavHashLink>
           </li>
 
-          <li className="relative group flex items-center">
-            <p>
+          <li className="relative group flex items-center  min-w-[100px] ">
+            <p className="text-center w-full">
               <a
                 href={
                   allServices[0][0]
@@ -88,7 +88,7 @@ export default function Navbar() {
                 Services
               </a>
             </p>
-            <ul className="absolute left-[-350%] top-[37px] min-[868px]:top-[41px] min-[968px]:top-[45px] lg:top-12 xl:top-[4.6rem] hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
+            <ul className="absolute left-[-150%] top-[37px] min-[868px]:top-[41px] min-[968px]:top-[45px] lg:top-12 xl:top-[4.6rem] hidden group-hover:grid grid-cols-2 justify-between gap-5  min-w-max  bg-white border border-t-0 border-slate-300 rounded-b-lg  p-3 pr-0  text-nowrap">
               {allServices.map((column, index) => (
                 <ul key={index} className="space-y-2">
                   {(isLoading || isError
@@ -119,7 +119,7 @@ export default function Navbar() {
             </ul>
           </li>
 
-          {/* <li className="relative group flex items-center">
+          {/* <li className="relative group flex items-center ">
             <a href="/#home-portfolio" className="hover:text-gray-400">
               Portfolio
             </a>
@@ -147,7 +147,7 @@ export default function Navbar() {
             </ul>
           </li> */}
 
-          <li className="flex items-center">
+          <li className="flex items-center ">
             <NavHashLink
               to="/#home-testimonials"
               scroll={(el) =>
@@ -159,7 +159,7 @@ export default function Navbar() {
             </NavHashLink>
           </li>
 
-          <li className="flex items-center">
+          <li className="flex items-center ">
             <NavHashLink
               to="/#home-faq"
               scroll={(el) =>
@@ -171,7 +171,7 @@ export default function Navbar() {
             </NavHashLink>
           </li>
 
-          <li className="flex items-center">
+          <li className="flex items-center ">
             <NavHashLink
               to="/#home-contactus"
               scroll={(el) =>
@@ -189,7 +189,7 @@ export default function Navbar() {
           <button onClick={closeDrawer}>
             <CloseIcon fontSize="large" />
           </button>
-          <img src={logo} alt="" />
+          <img src={logo} alt="logo" className="bg-white" />
           <ul className="flex flex-col gap-4 p-6">
             <li onClick={closeDrawer} className="flex items-center">
               <NavHashLink
