@@ -60,7 +60,7 @@ const [subcategoryOpen,setSubcategoryOpen] = useState(false)
           onClick={openDrawer}
         />
 
-        <ul className="hidden md:flex justify-between gap-4  lg:gap-8 " onMouseLeave={()=>setSubcategoryOpen(false)}>
+        <ul className="hidden md:flex justify-between gap-4 lg:gap-8 " onMouseLeave={()=>setSubcategoryOpen(false)}>
           <li className="flex items-center ">
             <NavHashLink
               to="/#home-about"
@@ -73,7 +73,7 @@ const [subcategoryOpen,setSubcategoryOpen] = useState(false)
             </NavHashLink>
           </li>
 
-          <li className="relative group flex items-center  min-w-[100px] " onMouseEnter={()=>setSubcategoryOpen(true)}>
+          <li className="relative group flex items-center" onMouseEnter={()=>setSubcategoryOpen(true)}>
             <p className="text-center w-full">
               <a
                 href={
